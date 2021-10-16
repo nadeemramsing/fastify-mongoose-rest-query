@@ -1,0 +1,27 @@
+{
+  "name": "fastify-mongoose-rest-query",
+  "version": "0.0.1",
+  "description": "",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "tap --reporter=list --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nadeemramsing/fastify-mongoose-rest-query.git"
+  },
+  "author": "nadeem.ramsing@gmail.com",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nadeemramsing/fastify-mongoose-rest-query/issues"
+  },
+  "homepage": "https://github.com/nadeemramsing/fastify-mongoose-rest-query#readme",
+  "dependencies": {
+    "fastify": "~3.22.0",
+    "mongoose": "~6.0.11"
+  },
+  "devDependencies": {
+    "pino-pretty": "^7.1.0",
+    "tap": "^15.0.10"
+  }
+}
