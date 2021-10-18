@@ -7,9 +7,7 @@ module.exports = ({ prefix = '', schemas = {} }) => plugin((app, opts, done) => 
 
   app.addHook('onRequest', assignModelsHook({ app, schemas }));
 
-  // req.models must be available
-  app.register(mainRoute, { prefix });
-
+  app.register(mainRoute(schemas), { prefix });
 
   done()
 })

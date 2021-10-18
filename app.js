@@ -4,7 +4,7 @@ const fastify = require('fastify')
 const { MongoMemoryServer } = require('mongodb-memory-server')
 
 const mrq = require('./src')
-const schemas = require('./schemas')
+const schemas = require('./models')
 
 async function build(opts = {}) {
   const app = fastify(opts)

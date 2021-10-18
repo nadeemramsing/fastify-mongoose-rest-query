@@ -24,7 +24,7 @@ function getConnection(uri) {
 function getModels(uri, schemas) {
   const conn = getConnection(uri)
 
-  for (const [modelName, schema] of Object.entries(schemas)) {
+  for (const [modelName, { schema }] of Object.entries(schemas)) {
     let model = conn.modelMap.get(modelName)
 
     if (!model) {
