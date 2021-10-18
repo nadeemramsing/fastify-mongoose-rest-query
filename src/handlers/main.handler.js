@@ -12,27 +12,23 @@ module.exports = modelName => {
   function get(req, rep) {
     const Model = req.models.get(modelName)
 
-    // const query = getQuery(req.query)
+    const query = getQuery(req.query)
 
     return Model
-      .find()
-    // .find(query.filter)
-    // .select(query.select)
-    // .populate(query.populate)
-    // .skip(query.skip)
-    // .limit(query.limit)
-    // .lean()
+      .find(query.filter)
+      .select(query.select)
+      .populate(query.populate)
+      .skip(query.skip)
+      .limit(query.limit)
+      .lean()
   }
 
-  async function count(req, rep) {
+  function count(req, rep) {
     const Model = req.models.get(modelName)
 
-    // const query = getQuery()
+    const query = getQuery()
 
-    const count = await Model.count()
-    // .count(query.filter)
-
-    rep.send(count)
+    return Model.count(query.filter)
   }
 
   function create() {

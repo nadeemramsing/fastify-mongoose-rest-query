@@ -1,3 +1,5 @@
+const { getQuery } = require("../utils/mongoose.util")
+
 module.exports = modelName => {
   return {
     getById,
@@ -8,12 +10,12 @@ module.exports = modelName => {
   function getById(req, rep) {
     const Model = req.models.get(modelName)
 
-    // const query = getQuery(req.query)
+    const query = getQuery(req.query)
 
     return Model
       .findById(req.params.id)
-      // .select(query.select)
-      // .populate(query.populate)
+      .select(query.select)
+      .populate(query.populate)
       .lean()
   }
 

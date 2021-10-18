@@ -10,16 +10,15 @@ module.exports = {
   getQuery
 }
 
-
 function getQuery_(query) {
 
-  const filter = {}
-  const sort = {}
-  const select = {}
-  const populate = ''
-  const criterias = []
-  const limit = null
-  const skip = null
+  let filter = {}
+  let sort = {}
+  let select = {}
+  let populate = ''
+  let criterias = []
+  let limit = null
+  let skip = null
 
   for (const field in query) {
     const value = query[field]
@@ -60,11 +59,10 @@ function getQuery_(query) {
     filter: filter,
     select: select,
     sort: sort,
-    populate: populate || 'null',
+    populate: populate,
     limit: limit,
     skip: skip
   };
-
 }
 
 function getCriteria_(field, value) {
@@ -120,7 +118,6 @@ function formatCriteriaValue_(value = '') {
     return null
 
   return value;
-
 }
 
 function getSort_(fields) {
