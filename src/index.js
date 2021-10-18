@@ -7,7 +7,7 @@ module.exports = ({ prefix = '', schemas = {} }) => plugin(async (app, opts, don
 
   app.addHook('onRequest', assignModelsHook({ app, schemas }));
 
-  app.addHook('onRoute', ({ url, method }) => app.log.info(`Route created: ${method} ${url}`))
+  app.addHook('onRoute', ({ url, method }) => app.log.info(`Endpoint created: ${url} ${method}`))
 
   app.register(mainRoute(schemas), { prefix });
 })
