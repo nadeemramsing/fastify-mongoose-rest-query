@@ -18,12 +18,13 @@
   "homepage": "https://github.com/nadeemramsing/fastify-mongoose-rest-query#readme",
   "dependencies": {
     "fastify": "~3.22.0",
+    "fastify-plugin": "~3.0.0",
     "mongoose": "~6.0.11",
-    "nano-memoize": "^1.2.1"
+    "nano-memoize": "~1.2.1"
   },
   "devDependencies": {
-    "mongodb-memory-server": "^7.4.4",
-    "pino-pretty": "^7.1.0",
-    "tap": "^15.0.10"
+    "mongodb-memory-server": "~7.4.4",
+    "pino-pretty": "~7.1.0",
+    "tap": "~15.0.10"
   }
 }

@@ -1,17 +1,23 @@
 'use strict'
 
 const fastify = require('fastify')
+const { MongoMemoryServer } = require('mongodb-memory-server')
 
 const mrq = require('./src')
 const schemas = require('./schemas')
 
-function build(opts = {}) {
+async function build(opts = {}) {
   const app = fastify(opts)
+
+  // Stub: MongoDB
+  const mongod = await MongoMemoryServer.create()
+  const uri = mongod.getUri()
 
   const mrqOptions = { prefix: '/api', schemas }
 
+  // Stub: Hook for x-client-mongodb-path
   app.decorateRequest('x-client-mongodb-path', '')
-  app.addHook('onRequest', (req, rep, done) => req['x-client-mongodb-path'] = 'mongodb://localhost:test')
+  app.addHook('onRequest', async req => req['x-client-mongodb-path'] = uri)
 
   app.register(mrq(mrqOptions))
 

@@ -3,5 +3,5 @@ module.exports = {
 }
 
 function list(req, rep) {
-
+  debugger
 }

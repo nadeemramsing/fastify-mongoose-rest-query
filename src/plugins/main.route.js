@@ -1,8 +1,8 @@
 const mainHandler = require('../handlers/main.handler')
 
 module.exports = (app, opts, done) => {
-  
-  app.get(mainHandler)
+
+  app.get('', mainHandler.list)
 
   done()
 }
