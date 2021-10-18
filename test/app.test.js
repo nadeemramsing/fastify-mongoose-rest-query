@@ -2,7 +2,7 @@ const { test } = require('tap')
 const build = require('../app')
 
 test('requests the "/" route', async t => {
-  const app = build()
+  const app = await build()
 
   t.teardown(() => app.close())
 
@@ -12,4 +12,6 @@ test('requests the "/" route', async t => {
   })
 
   t.equal(response.statusCode, 200, 'returns a status code of 200')
+
+  t.end()
 })
