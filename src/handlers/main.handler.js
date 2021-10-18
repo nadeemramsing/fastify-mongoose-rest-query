@@ -2,14 +2,14 @@ const { getQuery } = require('../utils/mongoose.util')
 
 module.exports = modelName => {
   return {
-    list,
+    get,
     count,
     create,
     updateMany,
     deleteMany
   }
 
-  function list(req, rep) {
+  function get(req, rep) {
     const Model = req.models.get(modelName)
 
     // const query = getQuery(req.query)

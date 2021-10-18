@@ -1,9 +1,11 @@
 module.exports = modelName => {
   return {
-    list
+    getById,
+    updateById,
+    deleteById
   }
 
-  function list(req, rep) {
+  function getById(req, rep) {
     const Model = req.models.get(modelName)
 
     // const query = getQuery(req.query)
@@ -13,5 +15,17 @@ module.exports = modelName => {
       // .select(query.select)
       // .populate(query.populate)
       .lean()
+  }
+
+  function updateById(req, rep) {
+    const Model = req.models.get(modelName)
+
+    return Model
+  }
+
+  function deleteById(req, rep) {
+    const Model = req.models.get(modelName)
+
+    return Model.deleteOne({ _id: req.params.id })
   }
 }

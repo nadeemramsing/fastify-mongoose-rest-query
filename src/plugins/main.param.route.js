@@ -6,7 +6,11 @@ module.exports = modelName => plugin((app, opts, done) => {
 
   const prefix = `${opts.prefix}/:id`
 
-  app.get(prefix, handler.list)
+  app.get(prefix, handler.getById)
+
+  app.put(prefix, handler.updateById)
+
+  app.delete(prefix, handler.deleteById)
 
   done()
 })

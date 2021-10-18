@@ -10,7 +10,7 @@ module.exports = schemas => plugin((app, opts, done) => {
 
     const prefix = `${opts.prefix}/${endpointName}`
 
-    app.get(prefix, handler.list)
+    app.get(prefix, handler.get)
 
     app.get(`${prefix}/count`, handler.count)
 
