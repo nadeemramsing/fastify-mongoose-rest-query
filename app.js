@@ -13,7 +13,7 @@ async function build(opts = {}) {
   // Stub: MongoDB
   const mongod = await MongoMemoryServer.create()
   const uri = mongod.getUri()
-  mongoInit(uri)
+  await mongoInit(uri)
 
   const mrqOptions = { prefix: '/api', schemas }
 
@@ -22,10 +22,6 @@ async function build(opts = {}) {
   app.addHook('onRequest', async req => req['x-client-mongodb-path'] = uri)
 
   app.register(mrq(mrqOptions))
-
-  app.get('/', function (req, rep) {
-    return { hello: 'world' }
-  })
 
   return app
 }

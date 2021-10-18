@@ -2,6 +2,7 @@ const mongoose = require('mongoose')
 
 const models = require('./models')
 
+const { Types: { ObjectId } } = mongoose
 const EmployeeSchema = models.Employee.schema
 
 module.exports = async uri => {
@@ -11,6 +12,7 @@ module.exports = async uri => {
 
   await EmployeeModel.create([
     {
+      _id: ObjectId('616d829d0767b556f1bc90c5'),
       name: 'Nadeem',
       age: 28,
       addresses: [{ street: 'street1', city: 'Beau Bassin' }, { street: 'streetA', city: 'Curepipe' },]

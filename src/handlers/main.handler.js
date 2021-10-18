@@ -9,12 +9,12 @@ module.exports = modelName => {
     deleteMany
   }
 
-  async function list(req, rep) {
+  function list(req, rep) {
     const Model = req.models.get(modelName)
 
-    // const query = getQuery()
+    // const query = getQuery(req.query)
 
-    const docs = await Model
+    return Model
       .find()
     // .find(query.filter)
     // .select(query.select)
@@ -22,8 +22,6 @@ module.exports = modelName => {
     // .skip(query.skip)
     // .limit(query.limit)
     // .lean()
-
-    rep.send(docs)
   }
 
   async function count(req, rep) {

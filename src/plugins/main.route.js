@@ -1,21 +1,27 @@
-module.exports = schemas => (app, opts, done) => {
+const plugin = require('fastify-plugin')
+
+const mainParamRoute = require('./main.param.route')
+
+module.exports = schemas => plugin((app, opts, done) => {
 
   for (const [modelName, { endpointName }] of Object.entries(schemas)) {
 
-    const mainHandler = require('../handlers/main.handler')(modelName)
+    const handler = require('../handlers/main.handler')(modelName)
 
-    app.get(`/${endpointName}`, mainHandler.list)
+    const prefix = `${opts.prefix}/${endpointName}`
 
-    app.get(`/${endpointName}/count`, mainHandler.count)
+    app.get(prefix, handler.list)
 
-    app.post(`/${endpointName}`, mainHandler.create)
+    app.get(`${prefix}/count`, handler.count)
 
-    app.put(`/${endpointName}`, mainHandler.updateMany)
+    app.post(`${prefix}`, handler.create)
 
-    app.delete(`/${endpointName}`, mainHandler.deleteMany)
+    app.put(`${prefix}`, handler.updateMany)
 
-    app.log.info(`REST endpoints for ${modelName} model created`)
+    app.delete(`${prefix}`, handler.deleteMany)
+
+    app.register(mainParamRoute(modelName), { prefix })
   }
 
   done()
-}
+})
