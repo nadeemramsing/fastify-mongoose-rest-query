@@ -1,22 +1,39 @@
 const { getQuery } = require('../utils/mongoose.util')
 
-const list = modelName => async (req, rep) => {
-  const Model = req.models.get(modelName)
+module.exports = modelName => {
+  return {
+    list,
+    count
+  }
 
-  // const query = getQuery()
+  async function list(req, rep) {
+    const Model = req.models.get(modelName)
 
-  const docs = await Model
-    .find()
-  // .find(query.filter)
-  // .select(query.select)
-  // .populate(query.populate)
-  // .skip(query.skip)
-  // .limit(query.limit)
-  // .lean()
+    // const query = getQuery()
 
-  rep.send(docs)
-}
+    const docs = await Model
+      .find()
+    // .find(query.filter)
+    // .select(query.select)
+    // .populate(query.populate)
+    // .skip(query.skip)
+    // .limit(query.limit)
+    // .lean()
 
-module.exports = {
-  list
+    rep.send(docs)
+  }
+
+  async function count(req, rep) {
+    const Model = req.models.get(modelName)
+
+    // const query = getQuery()
+
+    const count = await Model
+      .count()
+    // .count(query.filter)
+
+
+    rep.send(count)
+  }
+
 }
