@@ -1,11 +1,17 @@
 const memo = require('nano-memoize')
 
+const getQuery = memo(getQuery_)
+const getCriteria = memo(getCriteria_)
+const formatCriteriaValue = memo(formatCriteriaValue_)
+const getSort = memo(getSort_)
+const getSelect = memo(getSelect_)
+
 module.exports = {
-  getQuery: memo(getQuery)
+  getQuery
 }
 
 
-function getQuery(query) {
+function getQuery_(query) {
 
   const filter = {}
   const sort = {}
@@ -61,7 +67,7 @@ function getQuery(query) {
 
 }
 
-function getCriteria(field, value) {
+function getCriteria_(field, value) {
 
   const criteria = {};
 
@@ -70,7 +76,7 @@ function getCriteria(field, value) {
   return criteria;
 }
 
-function formatCriteriaValue(value = '') {
+function formatCriteriaValue_(value = '') {
 
   if (value.startsWith('~'))
     return new RegExp(value.slice(1), 'i');
@@ -117,7 +123,7 @@ function formatCriteriaValue(value = '') {
 
 }
 
-function getSort(fields) {
+function getSort_(fields) {
   const sort = {};
 
   const fieldList = fields
@@ -133,7 +139,7 @@ function getSort(fields) {
   return sort;
 }
 
-function getSelect(fields) {
+function getSelect_(fields) {
   const select = {};
 
   const fieldList = fields
