@@ -3,7 +3,10 @@ const { getQuery } = require('../utils/mongoose.util')
 module.exports = modelName => {
   return {
     list,
-    count
+    count,
+    create,
+    updateMany,
+    deleteMany
   }
 
   async function list(req, rep) {
@@ -28,12 +31,22 @@ module.exports = modelName => {
 
     // const query = getQuery()
 
-    const count = await Model
-      .count()
+    const count = await Model.count()
     // .count(query.filter)
 
-
     rep.send(count)
+  }
+
+  function create() {
+
+  }
+
+  function updateMany() {
+
+  }
+
+  function deleteMany() {
+
   }
 
 }

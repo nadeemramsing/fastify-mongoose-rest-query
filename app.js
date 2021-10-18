@@ -5,6 +5,7 @@ const { MongoMemoryServer } = require('mongodb-memory-server')
 
 const mrq = require('./src')
 const schemas = require('./models')
+const mongoInit = require('./mongo-init')
 
 async function build(opts = {}) {
   const app = fastify(opts)
@@ -12,6 +13,7 @@ async function build(opts = {}) {
   // Stub: MongoDB
   const mongod = await MongoMemoryServer.create()
   const uri = mongod.getUri()
+  mongoInit(uri)
 
   const mrqOptions = { prefix: '/api', schemas }
 
