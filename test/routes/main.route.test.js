@@ -1,4 +1,5 @@
 const build = require('../../app')
+const employees = require('../../documents/employees')
 
 let app
 
@@ -6,11 +7,13 @@ beforeAll(async () => app = await build())
 
 afterAll(() => { app.mongod.stop(); app.close() })
 
-test('requests the "/" route', async () => {
-  const { statusCode } = await app.inject({
+test('Endpoint /employees GET', async () => {
+  let { body } = await app.inject({
     method: 'GET',
-    url: '/'
+    url: '/api/employees'
   })
 
-  expect(statusCode).toBe(200)
+  body = JSON.parse(body)
+
+  expect(body.length).toBe(employees.length)
 })
