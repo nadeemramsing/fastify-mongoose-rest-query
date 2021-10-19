@@ -7,6 +7,7 @@ const fp = {
   pipe: require('lodash/fp/pipe'),
   pluck: require('lodash/fp/pluck'),
   take: require('lodash/fp/take'),
+  uniq: require('lodash/fp/uniq'),
 }
 
 const build = require('../../app')
@@ -186,6 +187,41 @@ test('Endpoint /employees GET with limit 2', async () => {
 })
 
 // count
+
+test('Endpoint /employees/distinct/:path GET without filter', async () => {
+  let { body } = await app.inject({
+    method: 'GET',
+    url: '/api/employees/distinct/name'
+  })
+
+  body = JSON.parse(body)
+
+  const namesEmployee = fp.pipe(
+    fp.pluck('name'),
+    fp.uniq
+  )(employees)
+
+  expect(body).toEqual(namesEmployee)
+})
+
+test('Endpoint /employees/distinct/:path GET filter', async () => {
+  let { body } = await app.inject({
+    method: 'GET',
+    url: '/api/employees/distinct/name?name=~a$'
+  })
+
+  body = JSON.parse(body)
+
+  const namesEmployee = fp.pipe(
+    fp.pluck('name'),
+    fp.filter(doc => doc.endsWith('a')),
+    fp.uniq
+  )(employees)
+
+  expect(body).toEqual(namesEmployee)
+})
+
+
 // create
 // updateMany
 // deleteMany
