@@ -184,3 +184,8 @@ test('Endpoint /employees GET with limit 2', async () => {
 
   expect(idsBody).toEqual(idsEmployee)
 })
+
+// count
+// create
+// updateMany
+// deleteMany

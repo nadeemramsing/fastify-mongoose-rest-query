@@ -25,6 +25,7 @@
       "runtimeArgs": [
         "test"
       ],
+      "outputCapture": "std"
     }
   ]
 }
