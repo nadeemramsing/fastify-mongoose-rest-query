@@ -14,7 +14,7 @@ function getQuery_(query) {
 
   let filter = {}
   let sort = {}
-  let select = {}
+  let select = { __v: 0 }
   let populate = ''
   let criterias = []
   let limit = null

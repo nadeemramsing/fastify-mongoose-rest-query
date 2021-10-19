@@ -20,7 +20,7 @@ module.exports = modelName => {
       .populate(query.populate)
       .skip(query.skip)
       .limit(query.limit)
-      .lean()
+      .lean({ virtuals: true })
   }
 
   function count(req, rep) {

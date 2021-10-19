@@ -16,7 +16,7 @@ module.exports = modelName => {
       .findById(req.params.id)
       .select(query.select)
       .populate(query.populate)
-      .lean()
+      .lean({ virtuals: true })
   }
 
   function updateById(req, rep) {

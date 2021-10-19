@@ -27,6 +27,7 @@
     "lodash": "~4.17.21",
     "minipass-fetch": "~1.4.1",
     "mongodb-memory-server": "~7.4.4",
+    "mongoose-lean-virtuals": "^0.9.0",
     "pino-pretty": "~7.1.0"
   }
 }
