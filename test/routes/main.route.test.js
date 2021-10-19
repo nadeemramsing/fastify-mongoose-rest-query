@@ -24,8 +24,8 @@ test('Endpoint /employees GET with no querystring', async () => {
 
   body = JSON.parse(body)
 
-  idsBody = fp.pluck('_id', body)
-  idsEmployee = fp.pluck('_id', employees).map(String)
+  const idsBody = fp.pluck('_id', body)
+  const idsEmployee = fp.pluck('_id', employees).map(String)
 
   expect(idsBody).toEqual(idsEmployee)
 })
@@ -38,9 +38,9 @@ test('Endpoint /employees GET with 1 filter name=Nadeem', async () => {
 
   body = JSON.parse(body)
 
-  idsBody = fp.pluck('_id', body)
+  const idsBody = fp.pluck('_id', body)
 
-  idsEmployee = fp.pipe(
+  const idsEmployee = fp.pipe(
     fp.filter({ name: 'Nadeem' }),
     fp.pluck('_id'),
     fp.map(String)
@@ -57,9 +57,9 @@ test('Endpoint /employees GET with 2 filters name=~mira&age>=10', async () => {
 
   body = JSON.parse(body)
 
-  idsBody = fp.pluck('_id', body)
+  const idsBody = fp.pluck('_id', body)
 
-  idsEmployee = fp.pipe(
+  const idsEmployee = fp.pipe(
     fp.filter(doc => RegExp('mira', 'i').test(doc.name) && doc.age >= 10),
     fp.pluck('_id'),
     fp.map(String)
@@ -76,9 +76,9 @@ test('Endpoint /employees GET with 1 filter addresses.street=street3', async () 
 
   body = JSON.parse(body)
 
-  idsBody = fp.pluck('_id', body)
+  const idsBody = fp.pluck('_id', body)
 
-  idsEmployee = fp.pipe(
+  const idsEmployee = fp.pipe(
     fp.filter(doc => doc.addresses.find(addr => addr.street === 'street3')),
     fp.pluck('_id'),
     fp.map(String)
@@ -95,9 +95,9 @@ test('Endpoint /employees GET with 1 filter noField=null', async () => {
 
   body = JSON.parse(body)
 
-  idsBody = fp.pluck('_id', body)
+  const idsBody = fp.pluck('_id', body)
 
-  idsEmployee = fp.pipe(
+  const idsEmployee = fp.pipe(
     fp.filter(doc => !doc.noField),
     fp.pluck('_id'),
     fp.map(String)
@@ -134,9 +134,9 @@ test('Endpoint /employees GET with sort -name', async () => {
 
   body = JSON.parse(body)
 
-  idsBody = fp.pluck('_id', body)
+  const idsBody = fp.pluck('_id', body)
 
-  idsEmployee = fp.pipe(
+  const idsEmployee = fp.pipe(
     fp.orderBy('name', 'asc'),
     fp.pluck('_id'),
     fp.map(String)
