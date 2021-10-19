@@ -40,8 +40,10 @@ module.exports = modelName => {
     return Model.distinct(req.params.path, query.filter)
   }
 
-  function create() {
+  function create(req, rep) {
+    const Model = req.models.get(modelName)
 
+    return Model.create(req.body)
   }
 
   function updateMany() {
