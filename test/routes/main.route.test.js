@@ -66,19 +66,24 @@ test('Endpoint /employees GET with 2 filters name=~mira&age>=10', async () => {
   expect(idsBody).toEqual(idsEmployee)
 })
 
-// test('Endpoint /employees GET with 1 filter address.street=street3', async () => {
-//   let { body } = await app.inject({
-//     method: 'GET',
-//     url: '/api/employees?address.street=street3'
-//   })
+test('Endpoint /employees GET with 1 filter addresses.street=street3', async () => {
+  let { body } = await app.inject({
+    method: 'GET',
+    url: '/api/employees?addresses.street=street3'
+  })
 
-//   body = JSON.parse(body)
+  body = JSON.parse(body)
 
-//   idsBody = fp.pluck('_id', body)
-//   idsEmployee = fp.pluck('_id', employees)
+  idsBody = fp.pluck('_id', body)
 
-//   expect(idsBody).toEqual(idsEmployee)
-// })
+  idsEmployee = fp.pipe(
+    fp.filter(doc => doc.addresses.find(addr => addr.street === 'street3')),
+    fp.pluck('_id'),
+    fp.map(String)
+  )(employees)
+
+  expect(idsBody).toEqual(idsEmployee)
+})
 
 // test('Endpoint /employees GET with select', async () => {
 //   let { body } = await app.inject({
