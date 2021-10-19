@@ -4,7 +4,7 @@
   "description": "",
   "main": "src/index.js",
   "scripts": {
-    "test": "tap --reporter=list --watch"
+    "test": "jest --runInBand --detectOpenHandles"
   },
   "repository": {
     "type": "git",
@@ -23,8 +23,9 @@
     "nano-memoize": "~1.2.1"
   },
   "devDependencies": {
+    "jest": "^27.3.0",
+    "minipass-fetch": "~1.4.1",
     "mongodb-memory-server": "~7.4.4",
-    "pino-pretty": "~7.1.0",
-    "tap": "~15.0.10"
+    "pino-pretty": "~7.1.0"
   }
 }
