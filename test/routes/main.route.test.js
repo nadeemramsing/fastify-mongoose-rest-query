@@ -1,10 +1,12 @@
 const fp = {
+  drop: require('lodash/fp/drop'),
   filter: require('lodash/fp/filter'),
   map: require('lodash/fp/map'),
   orderBy: require('lodash/fp/orderBy'),
   pick: require('lodash/fp/pick'),
   pipe: require('lodash/fp/pipe'),
   pluck: require('lodash/fp/pluck'),
+  take: require('lodash/fp/take'),
 }
 
 const build = require('../../app')
@@ -145,10 +147,40 @@ test('Endpoint /employees GET with sort -name', async () => {
   expect(idsBody).toEqual(idsEmployee)
 })
 
-// test('Endpoint /employees GET with skip', async () => {
+test('Endpoint /employees GET with skip 2', async () => {
+  let { body } = await app.inject({
+    method: 'GET',
+    url: '/api/employees?skip=2'
+  })
 
-// })
+  body = JSON.parse(body)
 
-// test('Endpoint /employees GET with limit', async () => {
+  const idsBody = fp.pluck('_id', body)
 
-// })
+  const idsEmployee = fp.pipe(
+    fp.drop(2),
+    fp.pluck('_id'),
+    fp.map(String)
+  )(employees)
+
+  expect(idsBody).toEqual(idsEmployee)
+})
+
+test('Endpoint /employees GET with limit 2', async () => {
+  let { body } = await app.inject({
+    method: 'GET',
+    url: '/api/employees?limit=2'
+  })
+
+  body = JSON.parse(body)
+
+  const idsBody = fp.pluck('_id', body)
+
+  const idsEmployee = fp.pipe(
+    fp.take(2),
+    fp.pluck('_id'),
+    fp.map(String)
+  )(employees)
+
+  expect(idsBody).toEqual(idsEmployee)
+})
