@@ -204,7 +204,7 @@ test('Endpoint /employees/distinct/:path GET without filter', async () => {
   expect(body).toEqual(namesEmployee)
 })
 
-test('Endpoint /employees/distinct/:path GET filter', async () => {
+test('Endpoint /employees/distinct/:path GET with filter', async () => {
   let { body } = await app.inject({
     method: 'GET',
     url: '/api/employees/distinct/name?name=~a$'
