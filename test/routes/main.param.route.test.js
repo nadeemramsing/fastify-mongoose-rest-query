@@ -26,7 +26,7 @@ test('Endpoint /employees/:id GET with no querystring', async () => {
 
   body = JSON.parse(body)
 
-  const idBody = body._id
+  const idBody = body.id
 
   const [idEmployee] = fp.pipe(
     fp.filter(doc => doc._id.equals('616d829d0767b556f1bc90c1')),
@@ -35,4 +35,16 @@ test('Endpoint /employees/:id GET with no querystring', async () => {
   )(employees)
 
   expect(idBody).toEqual(idEmployee)
+})
+
+test('Endpoint /employees/:id PUT', async () => {
+  let { body } = await app.inject({
+    method: 'PUT',
+    url: '/api/employees/616d829d0767b556f1bc90c1',
+    payload: { age: 29 }
+  })
+
+  body = JSON.parse(body)
+
+  expect(body.age).toBe(29)
 })

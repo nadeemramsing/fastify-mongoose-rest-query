@@ -6,8 +6,28 @@ const formatCriteriaValue = memo(formatCriteriaValue_)
 const getSort = memo(getSort_)
 const getSelect = memo(getSelect_)
 
+const toJSONOptions = {
+  virtuals: true,
+  versionKey: false,
+  transform: function (doc, ret) { delete ret._id; return ret }
+}
+
 module.exports = {
-  getQuery
+  toJSONOptions,
+  transformLean,
+  getQuery,
+}
+
+function transformLean(docs) {
+  if (!Array.isArray(docs))
+    return transformLeanSingle(docs)
+
+  return docs.map(transformLeanSingle)
+}
+
+function transformLeanSingle(doc) {
+  delete doc._id
+  return doc
 }
 
 function getQuery_(query) {

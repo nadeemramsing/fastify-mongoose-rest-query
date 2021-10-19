@@ -1,4 +1,4 @@
-const { getQuery } = require('../utils/mongoose.util')
+const { getQuery, transformLean } = require('../utils/mongoose.util')
 
 module.exports = modelName => {
   return {
@@ -21,7 +21,8 @@ module.exports = modelName => {
       .populate(query.populate)
       .skip(query.skip)
       .limit(query.limit)
-      .lean({ virtuals: true })
+      .lean({ virtuals: true, versionKey: false })
+      .then(transformLean)
   }
 
   function count(req, rep) {

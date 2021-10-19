@@ -27,7 +27,7 @@ test('Endpoint /employees GET with no querystring', async () => {
 
   body = JSON.parse(body)
 
-  const idsBody = fp.pluck('_id', body)
+  const idsBody = fp.pluck('id', body)
   const idsEmployee = fp.pluck('_id', employees).map(String)
 
   expect(idsBody).toEqual(idsEmployee)
@@ -41,7 +41,7 @@ test('Endpoint /employees GET with 1 filter name=Nadeem', async () => {
 
   body = JSON.parse(body)
 
-  const idsBody = fp.pluck('_id', body)
+  const idsBody = fp.pluck('id', body)
 
   const idsEmployee = fp.pipe(
     fp.filter({ name: 'Nadeem' }),
@@ -60,7 +60,7 @@ test('Endpoint /employees GET with 2 filters name=~mira&age>=10', async () => {
 
   body = JSON.parse(body)
 
-  const idsBody = fp.pluck('_id', body)
+  const idsBody = fp.pluck('id', body)
 
   const idsEmployee = fp.pipe(
     fp.filter(doc => RegExp('mira', 'i').test(doc.name) && doc.age >= 10),
@@ -79,7 +79,7 @@ test('Endpoint /employees GET with 1 filter addresses.street=street3', async () 
 
   body = JSON.parse(body)
 
-  const idsBody = fp.pluck('_id', body)
+  const idsBody = fp.pluck('id', body)
 
   const idsEmployee = fp.pipe(
     fp.filter(doc => doc.addresses.find(addr => addr.street === 'street3')),
@@ -98,7 +98,7 @@ test('Endpoint /employees GET with 1 filter noField=null', async () => {
 
   body = JSON.parse(body)
 
-  const idsBody = fp.pluck('_id', body)
+  const idsBody = fp.pluck('id', body)
 
   const idsEmployee = fp.pipe(
     fp.filter(doc => !doc.noField),
@@ -119,7 +119,14 @@ test('Endpoint /employees GET with select name,age', async () => {
 
   const employeesPicked = fp.pipe(
     fp.map(fp.pick(['_id', 'name', 'age'])),
-    fp.map(employee => ({ ...employee, '_id': employee._id.toString() }))
+    fp.map(employee => {
+      employee.id = employee._id.toString()
+      delete employee._id
+
+      employee.initial = employee.name[0].toUpperCase()
+
+      return employee
+    })
   )(employees)
 
   expect(body).toEqual(employeesPicked)
@@ -137,7 +144,7 @@ test('Endpoint /employees GET with sort -name', async () => {
 
   body = JSON.parse(body)
 
-  const idsBody = fp.pluck('_id', body)
+  const idsBody = fp.pluck('id', body)
 
   const idsEmployee = fp.pipe(
     fp.orderBy('name', 'asc'),
@@ -156,7 +163,7 @@ test('Endpoint /employees GET with skip 2', async () => {
 
   body = JSON.parse(body)
 
-  const idsBody = fp.pluck('_id', body)
+  const idsBody = fp.pluck('id', body)
 
   const idsEmployee = fp.pipe(
     fp.drop(2),
@@ -175,7 +182,7 @@ test('Endpoint /employees GET with limit 2', async () => {
 
   body = JSON.parse(body)
 
-  const idsBody = fp.pluck('_id', body)
+  const idsBody = fp.pluck('id', body)
 
   const idsEmployee = fp.pipe(
     fp.take(2),
