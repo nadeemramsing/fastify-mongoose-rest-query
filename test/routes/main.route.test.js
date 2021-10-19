@@ -1,6 +1,7 @@
 const fp = {
   filter: require('lodash/fp/filter'),
   map: require('lodash/fp/map'),
+  orderBy: require('lodash/fp/orderBy'),
   pick: require('lodash/fp/pick'),
   pipe: require('lodash/fp/pipe'),
   pluck: require('lodash/fp/pluck'),
@@ -125,9 +126,24 @@ test('Endpoint /employees GET with select name,age', async () => {
 
 // })
 
-// test('Endpoint /employees GET with sort', async () => {
+test('Endpoint /employees GET with sort -name', async () => {
+  let { body } = await app.inject({
+    method: 'GET',
+    url: '/api/employees?sort=-name'
+  })
 
-// })
+  body = JSON.parse(body)
+
+  idsBody = fp.pluck('_id', body)
+
+  idsEmployee = fp.pipe(
+    fp.orderBy('name', 'asc'),
+    fp.pluck('_id'),
+    fp.map(String)
+  )(employees)
+
+  expect(idsBody).toEqual(idsEmployee)
+})
 
 // test('Endpoint /employees GET with skip', async () => {
 
