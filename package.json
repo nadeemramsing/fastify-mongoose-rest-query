@@ -23,7 +23,8 @@
     "nano-memoize": "~1.2.1"
   },
   "devDependencies": {
-    "jest": "^27.3.0",
+    "jest": "~27.3.0",
+    "lodash": "~4.17.21",
     "minipass-fetch": "~1.4.1",
     "mongodb-memory-server": "~7.4.4",
     "pino-pretty": "~7.1.0"
