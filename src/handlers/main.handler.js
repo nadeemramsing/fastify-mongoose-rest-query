@@ -30,7 +30,7 @@ module.exports = modelName => {
 
     const query = getQuery(req.query)
 
-    return Model.count(query.filter)
+    return Model.estimatedDocumentCount(query.filter)
   }
 
   function distinct(req, rep) {
