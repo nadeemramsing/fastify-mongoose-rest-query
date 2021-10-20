@@ -6,6 +6,10 @@ const addressSchema = new Schema({
   city: String
 })
 
+addressSchema
+  .virtual('cityUpper')
+  .get(function () { return this.city?.toUpperCase() })
+
 const employeeSchema = new Schema({
   name: String,
   age: Number,
@@ -14,7 +18,7 @@ const employeeSchema = new Schema({
 
 employeeSchema
   .virtual('initial')
-  .get(function () { return this.name[0].toUpperCase() })
+  .get(function () { return this.name?.[0].toUpperCase() })
 
 employeeSchema.pre('save', async () => { })
 employeeSchema.plugin(leanVirtuals)

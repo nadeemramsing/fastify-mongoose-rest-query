@@ -1,6 +1,12 @@
 const memo = require('nano-memoize')
+const sift = require('sift')
+
+const fp = {
+  pipe: require('lodash/fp/pipe'),
+}
 
 const getQuery = memo(getQuery_)
+const getQueryForSubArray = memo(getQueryForSubArray_)
 const getCriteria = memo(getCriteria_)
 const formatCriteriaValue = memo(formatCriteriaValue_)
 const getSort = memo(getSort_)
@@ -12,10 +18,14 @@ const toJSONOptions = {
   transform: function (doc, ret) { delete ret._id; return ret }
 }
 
+const leanOptions = { virtuals: true, versionKey: false }
+
 module.exports = {
   toJSONOptions,
+  leanOptions,
   transformLean,
   getQuery,
+  getQueryForSubArray
 }
 
 function transformLean(docs) {
@@ -62,12 +72,11 @@ function getQuery_(query) {
         populate = value.replace(/,/g, " ");
     }
 
-    else {
+    else
       if (Array.isArray(value))
         criterias = value.map(v => getCriteria(field, v))
       else
         criterias.push(getCriteria(field, value));
-    }
   }
 
   if (criterias.length > 0)
@@ -76,12 +85,12 @@ function getQuery_(query) {
     };
 
   return {
-    filter: filter,
-    select: select,
-    sort: sort,
-    populate: populate,
-    limit: limit,
-    skip: skip
+    filter,
+    select,
+    sort,
+    populate,
+    limit,
+    skip
   };
 }
 
@@ -170,4 +179,39 @@ function getSelect_(fields) {
       select[field] = 1;
 
   return select;
+}
+
+function getQueryForSubArray_(query) {
+  let drop = 0
+  let take = Infinity
+
+  let filter = () => true
+  let criterias = []
+
+  for (const field in query) {
+    const value = query[field]
+
+    if (field === 'skip')
+      drop = parseInt(value)
+
+    else if (field === 'limit')
+      take = parseInt(value)
+
+    else
+      if (Array.isArray(value))
+        criterias = value.map(v => getCriteria(field, v))
+      else
+        criterias.push(getCriteria(field, value))
+  }
+
+  criterias = criterias.map(sift)
+
+  if (criterias.length > 0)
+    filter = fp.pipe(...criterias)
+
+  return {
+    drop,
+    take,
+    filter
+  }
 }

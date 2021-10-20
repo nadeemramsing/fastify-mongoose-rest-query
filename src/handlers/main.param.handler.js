@@ -1,4 +1,4 @@
-const { getQuery, toJSONOptions, transformLean } = require("../utils/mongoose.util")
+const { getQuery, toJSONOptions, transformLean, leanOptions } = require("../utils/mongoose.util")
 
 module.exports = modelName => {
   return {
@@ -16,7 +16,7 @@ module.exports = modelName => {
       .findById(req.params.id)
       .select(query.select)
       .populate(query.populate)
-      .lean({ virtuals: true, versionKey: false })
+      .lean(leanOptions)
       .then(transformLean)
   }
 
