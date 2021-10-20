@@ -1,6 +1,8 @@
 const fp = {
   drop: require('lodash/fp/drop'),
   filter: require('lodash/fp/filter'),
+  map: require('lodash/fp/map'),
+  pick: require('lodash/fp/pick'),
   pipe: require('lodash/fp/pipe'),
   take: require('lodash/fp/take'),
 }
@@ -22,7 +24,7 @@ module.exports = (modelName, path) => {
       fp.filter(query.filter),
       fp.drop(query.drop),
       fp.take(query.take),
-      // fp.pick(query.select)
+      fp.map(query.select ? fp.pick(query.select) : x => x)
     )(subarray)
   }
 }

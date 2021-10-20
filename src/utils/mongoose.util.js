@@ -11,6 +11,7 @@ const getCriteria = memo(getCriteria_)
 const formatCriteriaValue = memo(formatCriteriaValue_)
 const getSort = memo(getSort_)
 const getSelect = memo(getSelect_)
+const getSelectForSubArray = memo(getSelectForSubArray_)
 
 const toJSONOptions = {
   virtuals: true,
@@ -184,6 +185,7 @@ function getSelect_(fields) {
 function getQueryForSubArray_(query) {
   let drop = 0
   let take = Infinity
+  let select = null
 
   let filter = () => true
   let criterias = []
@@ -196,6 +198,9 @@ function getQueryForSubArray_(query) {
 
     else if (field === 'limit')
       take = parseInt(value)
+
+    else if (field === 'select')
+      select = getSelectForSubArray(value)
 
     else
       if (Array.isArray(value))
@@ -212,6 +217,13 @@ function getQueryForSubArray_(query) {
   return {
     drop,
     take,
-    filter
+    filter,
+    select
   }
+}
+
+function getSelectForSubArray_(fields) {
+  return fields
+    .toString()
+    .split(',');
 }

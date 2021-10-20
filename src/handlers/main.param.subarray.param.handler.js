@@ -2,6 +2,7 @@ const fp = {
   drop: require('lodash/fp/drop'),
   filter: require('lodash/fp/filter'),
   first: require('lodash/fp/first'),
+  pick: require('lodash/fp/pick'),
   pipe: require('lodash/fp/pipe'),
   take: require('lodash/fp/take'),
 }
@@ -22,7 +23,7 @@ module.exports = (modelName, path) => {
     return fp.pipe(
       fp.filter({ id: req.params.subId }),
       fp.first,
-      // fp.pick(query.select)
+      query.select ? fp.pick(query.select) : x => x
     )(subarray)
   }
 }
