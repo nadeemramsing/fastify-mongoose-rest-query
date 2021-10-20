@@ -48,3 +48,21 @@ test('Endpoint /employees/:id PUT', async () => {
 
   expect(body.age).toBe(29)
 })
+
+test('Endpoint /employees/:id DELETE', async () => {
+  let { body } = await app.inject({
+    method: 'DELETE',
+    url: '/api/employees/616d829d0767b556f1bc90c1'
+  })
+
+  expect(body).toBe('OK')
+})
+
+test('Endpoint /employees/:id DELETE DocumentNotFound', async () => {
+  let { body } = await app.inject({
+    method: 'DELETE',
+    url: '/api/employees/616d829d0767b556f1bc9111'
+  })
+
+  expect(body).toBe('DocumentNotFound')
+})

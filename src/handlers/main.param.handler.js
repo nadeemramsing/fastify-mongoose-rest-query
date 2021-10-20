@@ -34,9 +34,18 @@ module.exports = modelName => {
     return doc.toJSON(toJSONOptions)
   }
 
-  function deleteById(req, rep) {
+  async function deleteById(req, rep) {
     const Model = req.models.get(modelName)
 
-    return Model.remove({ _id: req.params.id })
+    const doc = await Model
+      .findById(req.params.id)
+      .select('_id')
+
+    if (!doc)
+      throw 'DocumentNotFound'
+
+    await doc.remove({ req })
+
+    return 'OK'
   }
 }
