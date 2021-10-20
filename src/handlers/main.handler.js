@@ -1,4 +1,4 @@
-const { getQuery } = require('../utils/mongoose.util')
+const { getQuery, transformLean, leanOptions } = require('../utils/mongoose.util')
 
 module.exports = modelName => {
   return {
@@ -6,7 +6,8 @@ module.exports = modelName => {
     count,
     create,
     updateMany,
-    deleteMany
+    deleteMany,
+    distinct
   }
 
   function get(req, rep) {
@@ -20,19 +21,30 @@ module.exports = modelName => {
       .populate(query.populate)
       .skip(query.skip)
       .limit(query.limit)
-      .lean()
+      .lean(leanOptions)
+      .then(transformLean)
   }
 
   function count(req, rep) {
     const Model = req.models.get(modelName)
 
-    const query = getQuery()
+    const query = getQuery(req.query)
 
     return Model.count(query.filter)
   }
 
-  function create() {
+  function distinct(req, rep) {
+    const Model = req.models.get(modelName)
 
+    const query = getQuery(req.query)
+
+    return Model.distinct(req.params.path, query.filter)
+  }
+
+  function create(req, rep) {
+    const Model = req.models.get(modelName)
+
+    return Model.create(req.body)
   }
 
   function updateMany() {

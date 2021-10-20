@@ -1,13 +1,18 @@
 const plugin = require('fastify-plugin')
 
 const mainRoute = require('./plugins/main.route')
-const assignModelsHook = require('./hooks/assignModels.hook')
+const assignModelsHook = require('./hooks/assignModels.hook');
+const { closeConnections } = require('./utils/connection.util');
 
-module.exports = ({ prefix = '', schemas = {} }) => plugin(async (app, opts, done) => {
+module.exports = ({ prefix = '', schemas = {} }) => plugin((app, opts, done) => {
 
   app.addHook('onRequest', assignModelsHook({ app, schemas }));
 
   app.addHook('onRoute', ({ url, method }) => app.log.info(`Endpoint created: ${url} ${method}`))
 
-  app.register(mainRoute(schemas), { prefix });
+  app.addHook('onClose', closeConnections)
+
+  app.register(mainRoute(schemas), { prefix })
+
+  done()
 })

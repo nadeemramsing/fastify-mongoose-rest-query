@@ -13,6 +13,8 @@ async function build(opts = {}) {
   const uri = mongod.getUri()
   await mongoInit(uri)
 
+  app.mongod = mongod
+
   const mrqOptions = { prefix: '/api', schemas }
 
   // Stub: Hook for x-client-mongodb-path

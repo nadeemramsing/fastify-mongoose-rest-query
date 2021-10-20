@@ -2,7 +2,8 @@ const { createConnection } = require('mongoose')
 
 module.exports = {
   getConnection,
-  getModels
+  getModels,
+  closeConnections
 }
 
 const connMap = new Map()
@@ -35,4 +36,9 @@ function getModels(uri, schemas) {
   }
 
   return conn.modelMap
+}
+
+async function closeConnections() {
+  for (const conn of connMap.values())
+    await conn.instance.close()
 }

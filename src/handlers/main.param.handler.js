@@ -1,4 +1,4 @@
-const { getQuery } = require("../utils/mongoose.util")
+const { getQuery, toJSONOptions, transformLean, leanOptions } = require("../utils/mongoose.util")
 
 module.exports = modelName => {
   return {
@@ -16,13 +16,22 @@ module.exports = modelName => {
       .findById(req.params.id)
       .select(query.select)
       .populate(query.populate)
-      .lean()
+      .lean(leanOptions)
+      .then(transformLean)
   }
 
-  function updateById(req, rep) {
+  async function updateById(req, rep) {
     const Model = req.models.get(modelName)
 
-    return Model
+    const doc = await Model.findById(req.params.id)
+
+    Object.assign(doc, req.body)
+
+    Object.keys(req.body).forEach(key => doc.markModified(key))
+
+    await doc.save({ req })
+
+    return doc.toJSON(toJSONOptions)
   }
 
   function deleteById(req, rep) {
