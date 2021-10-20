@@ -37,6 +37,6 @@ module.exports = modelName => {
   function deleteById(req, rep) {
     const Model = req.models.get(modelName)
 
-    return Model.deleteOne({ _id: req.params.id })
+    return Model.remove({ _id: req.params.id })
   }
 }
