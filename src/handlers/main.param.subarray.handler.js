@@ -21,7 +21,8 @@ module.exports = (modelName, path) => {
     return fp.pipe(
       fp.filter(query.filter),
       fp.drop(query.drop),
-      fp.take(query.take)
+      fp.take(query.take),
+      // fp.pick(query.select)
     )(subarray)
   }
 }

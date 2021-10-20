@@ -1,4 +1,5 @@
 const plugin = require('fastify-plugin')
+const mainParamSubArrayParamRoute = require('./main.param.subarray.param.route')
 
 module.exports = (modelName, schema) => plugin((app, opts, done) => {
 
@@ -11,6 +12,8 @@ module.exports = (modelName, schema) => plugin((app, opts, done) => {
     const prefix = `${opts.prefix}/${path}`
 
     app.get(prefix, handler.get)
+
+    app.register(mainParamSubArrayParamRoute(modelName, path), { prefix })
 
   }
 
