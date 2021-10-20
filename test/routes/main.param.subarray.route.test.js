@@ -47,3 +47,36 @@ test('Endpoint /employees/:id/addresses GET with 1 filter city=~sin$', async () 
 
   expect(idBody).toBe(address._id.toString())
 })
+
+test('Endpoint /employees/:id/addresses/distinct/city GET', async () => {
+  let { body } = await app.inject({
+    method: 'GET',
+    url: '/api/employees/616d829d0767b556f1bc90c1/addresses/distinct/city'
+  })
+
+  body = JSON.parse(body)
+
+  expect(body).toEqual(['Beau Bassin', 'Curepipe'])
+})
+
+test('Endpoint /employees/:id/addresses/distinct/city GET with filter', async () => {
+  let { body } = await app.inject({
+    method: 'GET',
+    url: '/api/employees/616d829d0767b556f1bc90c1/addresses/distinct/city?city=~pipe$'
+  })
+
+  body = JSON.parse(body)
+
+  expect(body).toEqual(['Curepipe'])
+})
+
+test('Endpoint /employees/:id/addresses/distinct GET', async () => {
+  let { body } = await app.inject({
+    method: 'GET',
+    url: '/api/employees/616d829d0767b556f1bc90c1/addresses/distinct'
+  })
+
+  body = JSON.parse(body)
+
+  expect(Array.isArray(body)).toBe(true)
+})

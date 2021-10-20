@@ -13,6 +13,10 @@ module.exports = (modelName, schema) => plugin((app, opts, done) => {
 
     app.get(prefix, handler.get)
 
+    app.get(`${prefix}/distinct`, handler.distinct)
+
+    app.get(`${prefix}/distinct/:path`, handler.distinct)
+
     app.register(mainParamSubArrayParamRoute(modelName, path), { prefix })
 
   }
