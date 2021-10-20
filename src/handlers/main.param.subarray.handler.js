@@ -5,7 +5,8 @@ const fp = {
   take: require('lodash/fp/take'),
 }
 
-const { leanOptions, transformLean, getQueryForSubArray } = require("../utils/mongoose.util")
+const { getSubArray } = require('../utils/model.util')
+const { getQueryForSubArray } = require("../utils/mongoose.util")
 
 module.exports = (modelName, path) => {
   return {
@@ -13,16 +14,9 @@ module.exports = (modelName, path) => {
   }
 
   async function get(req, rep) {
-    const Model = req.models.get(modelName)
+    const subarray = await getSubArray(req, modelName, path)
 
     const query = getQueryForSubArray(req.query)
-
-    const doc = await Model
-      .findById(req.params.id)
-      .select(path)
-      .lean(leanOptions)
-
-    const subarray = transformLean(doc[path])
 
     return fp.pipe(
       fp.filter(query.filter),

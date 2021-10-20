@@ -1,6 +1,9 @@
+const { Types: { ObjectId } } = require('mongoose')
+
 const fp = {
   drop: require('lodash/fp/drop'),
   filter: require('lodash/fp/filter'),
+  find: require('lodash/fp/find'),
   map: require('lodash/fp/map'),
   orderBy: require('lodash/fp/orderBy'),
   pick: require('lodash/fp/pick'),
@@ -29,13 +32,18 @@ afterAll(() => { app.mongod.stop(); app.close() })
 //   debugger
 // })
 
-test('Endpoint /employees/:id/addresses GET with 1 filter city=~u', async () => {
+test('Endpoint /employees/:id/addresses GET with 1 filter city=~sin$', async () => {
   let { body } = await app.inject({
     method: 'GET',
-    url: '/api/employees/616d829d0767b556f1bc90c1/addresses?city=~u&limit=1'
+    url: '/api/employees/616d829d0767b556f1bc90c1/addresses?city=~sin$'
   })
 
   body = JSON.parse(body)
 
-  debugger
+  const idBody = body[0].id
+
+  const { addresses } = fp.find({ _id: ObjectId('616d829d0767b556f1bc90c1') }, employees)
+  const address = addresses.find(a => RegExp('sin$', 'i').test(a.city))
+
+  expect(idBody).toBe(address._id.toString())
 })
