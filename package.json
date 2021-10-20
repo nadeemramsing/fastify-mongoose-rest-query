@@ -4,7 +4,7 @@
   "description": "",
   "main": "src/index.js",
   "scripts": {
-    "test": "jest --detectOpenHandles"
+    "test": "jest --maxWorkers=50% --detectOpenHandles"
   },
   "repository": {
     "type": "git",
