@@ -44,15 +44,28 @@ module.exports = modelName => {
   function create(req, rep) {
     const Model = req.models.get(modelName)
 
-    return Model.create(req.body)
+    return Model.create(req.body, { req })
   }
 
   function updateMany() {
 
   }
 
-  function deleteMany() {
+  async function deleteMany(req, rep) {
+    const Model = req.models.get(modelName)
 
+    const query = getQuery(req.query)
+
+    const docs = await Model
+      .find(query.filter)
+      .select('_id')
+
+    if (!docs.length)
+      throw 'Document(s)NotFound'
+
+    await Promise.all(docs.map(doc => doc.remove({ req })))
+
+    return 'OK'
   }
 
 }

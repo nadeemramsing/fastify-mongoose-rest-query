@@ -231,4 +231,22 @@ test('Endpoint /employees/distinct/:path GET with filter', async () => {
 
 // create
 // updateMany
+
 // deleteMany
+test('Endpoint /employees DELETE with filter name=~a$', async () => {
+  let { body } = await app.inject({
+    method: 'DELETE',
+    url: '/api/employees?name=~a$'
+  })
+
+  expect(body).toBe('OK')
+})
+
+test('Endpoint /employees DELETE with filter name=~xxx$', async () => {
+  let { body } = await app.inject({
+    method: 'DELETE',
+    url: '/api/employees?name=~xxx$'
+  })
+
+  expect(body).toBe('Document(s)NotFound')
+})
