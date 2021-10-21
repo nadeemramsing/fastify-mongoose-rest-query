@@ -46,7 +46,7 @@ module.exports = modelName => {
     if (!doc)
       throw 'DocumentNotFound'
 
-    await doc.remove({ req, 'isDeleteById': true })
+    await doc.remove({ req })
 
     return 'OK'
   }

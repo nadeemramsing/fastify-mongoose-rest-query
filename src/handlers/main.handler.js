@@ -101,7 +101,7 @@ module.exports = modelName => {
     if (!docs.length)
       throw 'Document(s)NotFound'
 
-    await Promise.all(docs.map(doc => doc.remove({ req, 'isDeleteByQuery': true })))
+    await Promise.all(docs.map(doc => doc.remove({ req })))
 
     return 'OK'
   }
