@@ -29,7 +29,7 @@ module.exports = modelName => {
 
     Object.keys(req.body).forEach(key => doc.markModified(key))
 
-    await doc.save({ req })
+    await doc.save({ req, 'isUpdateById': true })
 
     return doc.toJSON(toJSONOptions)
   }
@@ -44,7 +44,7 @@ module.exports = modelName => {
     if (!doc)
       throw 'DocumentNotFound'
 
-    await doc.remove({ req })
+    await doc.remove({ req, 'isDeleteById': true })
 
     return 'OK'
   }

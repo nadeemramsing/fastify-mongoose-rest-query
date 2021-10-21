@@ -83,7 +83,7 @@ module.exports = modelName => {
 
       Object.keys(body).forEach(field => doc.markModified(field))
 
-      await doc.save({ req })
+      await doc.save({ req, 'isUpdateMany': true })
     }
 
     return docs.map(doc => doc.toJSON(toJSONOptions))
@@ -99,7 +99,7 @@ module.exports = modelName => {
     if (!docs.length)
       throw 'Document(s)NotFound'
 
-    await Promise.all(docs.map(doc => doc.remove({ req })))
+    await Promise.all(docs.map(doc => doc.remove({ req, 'isDeleteByQuery': true })))
 
     return 'OK'
   }
