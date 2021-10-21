@@ -11,7 +11,7 @@ addressSchema
   .get(function () { return this.city?.toUpperCase() })
 
 addressSchema.pre('save', async () => { })
-addressSchema.pre('remove', async () => { debugger })
+addressSchema.pre('remove', async () => { })
 
 const employeeSchema = new Schema({
   name: String,
@@ -24,7 +24,7 @@ employeeSchema
   .get(function () { return this.name?.[0].toUpperCase() })
 
 employeeSchema.pre('save', async () => { })
-employeeSchema.pre('remove', async function (next, options) { next() })
+employeeSchema.pre('remove', function (next, options) { next() })
 
 employeeSchema.plugin(leanVirtuals)
 

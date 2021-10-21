@@ -21,16 +21,16 @@ beforeAll(async () => app = await build())
 
 afterAll(() => { app.mongod.stop(); app.close() })
 
-// test('Endpoint /employees/:id/addresses GET with no querystring', async () => {
-//   let { body } = await app.inject({
-//     method: 'GET',
-//     url: '/api/employees/616d829d0767b556f1bc90c1/addresses'
-//   })
+test('Endpoint /employees/:id/addresses GET with no querystring', async () => {
+  let { body } = await app.inject({
+    method: 'GET',
+    url: '/api/employees/616d829d0767b556f1bc90c1/addresses'
+  })
 
-//   body = JSON.parse(body)
+  body = JSON.parse(body)
 
-//   debugger
-// })
+  expect(Array.isArray(body)).toBe(true)
+})
 
 test('Endpoint /employees/:id/addresses GET with 1 filter city=~sin$', async () => {
   let { body } = await app.inject({

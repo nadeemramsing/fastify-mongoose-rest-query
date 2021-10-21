@@ -228,11 +228,36 @@ test('Endpoint /employees/distinct/:path GET with filter', async () => {
   expect(body).toEqual(namesEmployee)
 })
 
-
 // create
-// updateMany
 
-// deleteMany
+test('Endpoint /employees PUT', async () => {
+  let { body } = await app.inject({
+    method: 'PUT',
+    url: '/api/employees',
+    payload: [
+      {
+        id: '616d829d0767b556f1bc90c1',
+        age: 30
+      },
+      {
+        id: '616d829d0767b556f1bc90c2',
+        age: 26
+      },
+      {
+        id: '616d829d0767b556f1bc90c3',
+        age: 1
+      }
+    ]
+  })
+
+  body = JSON.parse(body)
+
+  expect(body.length).toBe(3)
+
+  expect(body.map(doc => [30, 26, 1].includes(doc.age)))
+    .toEqual([true, true, true])
+})
+
 test('Endpoint /employees DELETE with filter name=~a$', async () => {
   let { body } = await app.inject({
     method: 'DELETE',

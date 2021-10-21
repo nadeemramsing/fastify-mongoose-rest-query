@@ -1,4 +1,10 @@
-const { getQuery, transformLean, leanOptions } = require('../utils/mongoose.util')
+const bs = require('binary-search')
+
+const fp = {
+  omit: require('lodash/fp/omit'),
+}
+
+const { getQuery, transformLean, leanOptions, toJSONOptions } = require('../utils/mongoose.util')
 
 module.exports = modelName => {
   return {
@@ -47,8 +53,34 @@ module.exports = modelName => {
     return Model.create(req.body, { req })
   }
 
-  function updateMany() {
+  async function updateMany(req, rep) {
+    const Model = req.models.get(modelName)
 
+    const ids = req.body.map(doc => doc.id)
+
+    const docs = await Model
+      .find({ '_id': { $in: ids } })
+      .sort('_id')
+
+    const docsId = docs.map(doc => doc.id)
+
+    for (let body of req.body) {
+      const i = bs(docsId, body.id, (needle, id) => needle.localeCompare(id))
+      const doc = docs[i]
+
+      if (!doc)
+        continue
+
+      body = fp.omit('id', body)
+
+      Object.assign(doc, body)
+
+      Object.keys(body).forEach(field => doc.markModified(field))
+
+      await doc.save({ req })
+    }
+
+    return docs.map(doc => doc.toJSON(toJSONOptions))
   }
 
   async function deleteMany(req, rep) {
