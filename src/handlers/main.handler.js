@@ -56,9 +56,7 @@ module.exports = modelName => {
 
     const query = getQuery(req.query)
 
-    const docs = await Model
-      .find(query.filter)
-      .select('_id')
+    const docs = await Model.find(query.filter)
 
     if (!docs.length)
       throw 'Document(s)NotFound'
