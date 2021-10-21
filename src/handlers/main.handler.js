@@ -79,11 +79,13 @@ module.exports = modelName => {
 
       body = fp.omit('id', body)
 
+      const _prev = doc.toJSON()
+
       Object.assign(doc, body)
 
       Object.keys(body).forEach(field => doc.markModified(field))
 
-      await doc.save({ req, 'isUpdateMany': true })
+      await doc.save({ req, _prev })
     }
 
     return docs.map(doc => doc.toJSON(toJSONOptions))

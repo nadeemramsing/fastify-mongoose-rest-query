@@ -39,13 +39,22 @@ module.exports = (modelName, path) => {
     const doc = await Model.findById(req.params.id)
 
     const subarray = doc[path]
-    const subitem = subarray.find(subitem => subitem.id === req.params.subId)
+    const subindex = subarray.findIndex(subitem => subitem.id === req.params.subId)
+    const subitem = subarray[subindex]
+
+    const _prev = subitem.toJSON()
 
     Object.assign(subitem, req.body)
 
     Object.keys(req.body).forEach(field => subitem.markModified(field))
 
-    await doc.save({ req, 'isUpdateSubItemById': true })
+    await doc.save({
+      _prev,
+      path,
+      req,
+      subindex,
+      'isUpdateSubItemById': true
+    })
 
     return subitem.toJSON(toJSONOptions)
   }
@@ -60,8 +69,10 @@ module.exports = (modelName, path) => {
     const subarray = doc[path]
     const subitem = subarray.find(subitem => subitem.id === req.params.subId)
 
+    const _prev = subitem.toJSON()
+
     subitem.remove()
-    await doc.save({ req, 'isDeleteSubItemById': true })
+    await doc.save({ req, _prev, 'isDeleteSubItemById': true })
 
     return 'OK'
   }

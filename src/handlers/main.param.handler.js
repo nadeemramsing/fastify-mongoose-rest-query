@@ -25,11 +25,13 @@ module.exports = modelName => {
 
     const doc = await Model.findById(req.params.id)
 
+    const _prev = doc.toJSON()
+
     Object.assign(doc, req.body)
 
     Object.keys(req.body).forEach(key => doc.markModified(key))
 
-    await doc.save({ req, 'isUpdateById': true })
+    await doc.save({ req, _prev })
 
     return doc.toJSON(toJSONOptions)
   }
