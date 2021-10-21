@@ -34,3 +34,19 @@ test('Endpoint /employees/:id/addresses/:subId GET', async () => {
 
   expect(body.id).toBe(address._id.toString())
 })
+
+test('Endpoint /employees/:id/addresses/:subId DELETE', async () => {
+  let { body } = await app.inject({
+    method: 'DELETE',
+    url: '/api/employees/616d829d0767b556f1bc90c1/addresses/616d829d0767b556f1bc90c5'
+  })
+
+  expect(body).toBe('OK')
+
+  let { 'body': body2 } = await app.inject({
+    method: 'GET',
+    url: '/api/employees/616d829d0767b556f1bc90c1/addresses/616d829d0767b556f1bc90c5'
+  })
+
+  expect(body2).toBe('SubDocumentNotFound')
+})

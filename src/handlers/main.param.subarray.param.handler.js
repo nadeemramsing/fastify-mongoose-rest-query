@@ -12,18 +12,39 @@ const { getQueryForSubArray } = require("../utils/mongoose.util")
 
 module.exports = (modelName, path) => {
   return {
-    getById
+    getById,
+    deleteById,
   }
 
   async function getById(req, rep) {
     const subarray = await getSubArray(req, modelName, path)
-
     const query = getQueryForSubArray(req.query)
 
-    return fp.pipe(
+    const subitem = fp.pipe(
       fp.filter({ id: req.params.subId }),
       fp.first,
       query.select ? fp.pick(query.select) : x => x
     )(subarray)
+
+    if (!subitem)
+      throw 'SubDocumentNotFound'
+
+    return subitem
+  }
+
+  async function deleteById(req, rep) {
+    const Model = req.models.get(modelName)
+
+    const doc = await Model
+      .findById(req.params.id)
+      .select(path)
+
+    const subarray = doc[path]
+    const subitem = subarray.find(subitem => subitem.id === req.params.subId)
+
+    subitem.remove()
+    await doc.save({ req, 'isDeleteSubItem': true })
+
+    return 'OK'
   }
 }

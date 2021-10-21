@@ -8,5 +8,7 @@ module.exports = (modelName, path) => plugin((app, opts, done) => {
 
   app.get(prefix, handler.getById)
 
+  app.delete(prefix, handler.deleteById)
+
   done()
 })
