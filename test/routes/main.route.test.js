@@ -228,7 +228,45 @@ test('Endpoint /employees/distinct/:path GET with filter', async () => {
   expect(body).toEqual(namesEmployee)
 })
 
-// create
+test('Endpoint /employees POST', async () => {
+  let { body } = await app.inject({
+    method: 'POST',
+    url: '/api/employees',
+    payload: [
+      {
+        _id: '616d829d0767b556f1bc9111',
+        name: 'Person One',
+        age: 100,
+        addresses: [
+          {
+            _id: '616d829d0767b556f1bc9333',
+            street: 'street1',
+            city: 'City One'
+          }
+        ]
+      },
+      {
+        _id: '616d829d0767b556f1bc9222',
+        name: 'Person Two',
+        age: 2,
+        addresses: [
+          {
+            _id: '616d829d0767b556f1bc9444',
+            street: 'street2',
+            city: 'City Two'
+          }
+        ]
+      }
+    ]
+  })
+
+  body = JSON.parse(body)
+
+  expect(body.length).toBe(2)
+
+  expect(body.map(doc => [100, 2].includes(doc.age)))
+    .toEqual([true, true])
+})
 
 test('Endpoint /employees PUT', async () => {
   let { body } = await app.inject({

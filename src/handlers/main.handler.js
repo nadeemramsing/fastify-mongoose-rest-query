@@ -47,10 +47,16 @@ module.exports = modelName => {
     return Model.distinct(req.params.path, query.filter)
   }
 
-  function create(req, rep) {
+  async function create(req, rep) {
     const Model = req.models.get(modelName)
+    const body = req.body
 
-    return Model.create(req.body, { req })
+    if (!Array.isArray(body))
+      body = [body]
+
+    const docs = await Model.create(body, { req })
+
+    return docs.map(doc => doc.toJSON(toJSONOptions))
   }
 
   async function updateMany(req, rep) {
