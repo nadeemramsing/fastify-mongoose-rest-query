@@ -10,6 +10,7 @@ addressSchema
   .virtual('cityUpper')
   .get(function () { return this.city?.toUpperCase() })
 
+// Avoid using subarray hooks
 addressSchema.pre('save', async function (next, options) { })
 addressSchema.pre('remove', async function (next, options) { })
 

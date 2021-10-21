@@ -8,11 +8,12 @@ const fp = {
 }
 
 const { getSubArray } = require('../utils/model.util')
-const { getQueryForSubArray } = require("../utils/mongoose.util")
+const { getQueryForSubArray, toJSONOptions } = require("../utils/mongoose.util")
 
 module.exports = (modelName, path) => {
   return {
     getById,
+    updateById,
     deleteById,
   }
 
@@ -32,6 +33,23 @@ module.exports = (modelName, path) => {
     return subitem
   }
 
+  async function updateById(req, rep) {
+    const Model = req.models.get(modelName)
+
+    const doc = await Model.findById(req.params.id)
+
+    const subarray = doc[path]
+    const subitem = subarray.find(subitem => subitem.id === req.params.subId)
+
+    Object.assign(subitem, req.body)
+
+    Object.keys(req.body).forEach(field => subitem.markModified(field))
+
+    await doc.save({ req, 'isUpdateSubItemById': true })
+
+    return subitem.toJSON(toJSONOptions)
+  }
+
   async function deleteById(req, rep) {
     const Model = req.models.get(modelName)
 
@@ -43,7 +61,7 @@ module.exports = (modelName, path) => {
     const subitem = subarray.find(subitem => subitem.id === req.params.subId)
 
     subitem.remove()
-    await doc.save({ req, 'isDeleteSubItem': true })
+    await doc.save({ req, 'isDeleteSubItemById': true })
 
     return 'OK'
   }

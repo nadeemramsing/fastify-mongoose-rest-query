@@ -8,6 +8,8 @@ module.exports = (modelName, path) => plugin((app, opts, done) => {
 
   app.get(prefix, handler.getById)
 
+  app.put(prefix, handler.updateById)
+
   app.delete(prefix, handler.deleteById)
 
   done()

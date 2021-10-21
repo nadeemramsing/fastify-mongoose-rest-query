@@ -35,6 +35,20 @@ test('Endpoint /employees/:id/addresses/:subId GET', async () => {
   expect(body.id).toBe(address._id.toString())
 })
 
+test('Endpoint /employees/:id/addresses/:subId PUT', async () => {
+  let { body } = await app.inject({
+    method: 'PUT',
+    url: '/api/employees/616d829d0767b556f1bc90c1/addresses/616d829d0767b556f1bc90c5',
+    payload: {
+      city: 'Port Louis'
+    }
+  })
+
+  body = JSON.parse(body)
+
+  expect(body.city).toBe('Port Louis')
+})
+
 test('Endpoint /employees/:id/addresses/:subId DELETE', async () => {
   let { body } = await app.inject({
     method: 'DELETE',
