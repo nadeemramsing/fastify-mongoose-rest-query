@@ -15,9 +15,9 @@ async function main() {
   await expressListenAsync(expressApp, 3001)
   console.log('Express server listening on ' + 3001)
 
-  // await require('./main.benchmark')()
-  // await require('./main.param.benchmark')()
-  // await require('./main.param.subarray.benchmark')()
+  await require('./main.benchmark')()
+  await require('./main.param.benchmark')()
+  await require('./main.param.subarray.benchmark')()
   await require('./main.param.subarray.param.benchmark')()
 }
 
