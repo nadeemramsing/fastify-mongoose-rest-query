@@ -49,7 +49,7 @@ module.exports = modelName => {
 
   async function create(req, rep) {
     const Model = req.models[modelName]
-    const body = req.body
+    let body = req.body
 
     if (!Array.isArray(body))
       body = [body]
