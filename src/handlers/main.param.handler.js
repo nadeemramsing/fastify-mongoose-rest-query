@@ -8,7 +8,7 @@ module.exports = modelName => {
   }
 
   function getById(req, rep) {
-    const Model = req.models.get(modelName)
+    const Model = req.models[modelName]
 
     const query = getQuery(req.query)
 
@@ -21,7 +21,7 @@ module.exports = modelName => {
   }
 
   async function updateById(req, rep) {
-    const Model = req.models.get(modelName)
+    const Model = req.models[modelName]
 
     const doc = await Model.findById(req.params.id)
 
@@ -37,7 +37,7 @@ module.exports = modelName => {
   }
 
   async function deleteById(req, rep) {
-    const Model = req.models.get(modelName)
+    const Model = req.models[modelName]
 
     const doc = await Model
       .findById(req.params.id)

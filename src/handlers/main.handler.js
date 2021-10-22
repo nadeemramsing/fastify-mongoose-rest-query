@@ -17,7 +17,7 @@ module.exports = modelName => {
   }
 
   function get(req, rep) {
-    const Model = req.models.get(modelName)
+    const Model = req.models[modelName]
 
     const query = getQuery(req.query)
 
@@ -32,7 +32,7 @@ module.exports = modelName => {
   }
 
   function count(req, rep) {
-    const Model = req.models.get(modelName)
+    const Model = req.models[modelName]
 
     const query = getQuery(req.query)
 
@@ -40,7 +40,7 @@ module.exports = modelName => {
   }
 
   function distinct(req, rep) {
-    const Model = req.models.get(modelName)
+    const Model = req.models[modelName]
 
     const query = getQuery(req.query)
 
@@ -48,7 +48,7 @@ module.exports = modelName => {
   }
 
   async function create(req, rep) {
-    const Model = req.models.get(modelName)
+    const Model = req.models[modelName]
     const body = req.body
 
     if (!Array.isArray(body))
@@ -60,7 +60,7 @@ module.exports = modelName => {
   }
 
   async function updateMany(req, rep) {
-    const Model = req.models.get(modelName)
+    const Model = req.models[modelName]
 
     const ids = req.body.map(doc => doc.id)
 
@@ -92,7 +92,7 @@ module.exports = modelName => {
   }
 
   async function deleteMany(req, rep) {
-    const Model = req.models.get(modelName)
+    const Model = req.models[modelName]
 
     const query = getQuery(req.query)
 
