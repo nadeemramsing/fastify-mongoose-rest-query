@@ -11,9 +11,9 @@ const getQuery = memo(getQuery_, memoOptions)
 const getQueryForSubArray = memo(getQueryForSubArray_, memoOptions)
 const getCriteria = memo(getCriteria_, memoOptions)
 const formatCriteriaValue = memo(formatCriteriaValue_, memoOptions)
-const getSort = memo(getSort_, memoOptions)
-const getSelect = memo(getSelect_, memoOptions)
-const getSelectForSubArray = memo(getSelectForSubArray_, memoOptions)
+const getSort = memo(getSort_)
+const getSelect = memo(getSelect_)
+const getSelectForSubArray = memo(getSelectForSubArray_)
 
 const toJSONOptions = {
   virtuals: true,
