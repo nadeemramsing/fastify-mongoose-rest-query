@@ -7,14 +7,14 @@ function printResult(resultFastify, resultExpress) {
     'Requests per second (avg)': { 'fastify': resultFastify.requests.average, 'express': resultExpress.requests.average },
     'Requests per second (max)': { 'fastify': resultFastify.requests.max, 'express': resultExpress.requests.max },
 
-    'Response data throughput per second (avg)': {
-      'fastify': resultFastify.throughput.average,
-      'express': resultExpress.throughput.average
+    'Response data throughput per second in Kb (avg)': {
+      'fastify': convertByteToKB(resultFastify.throughput.average),
+      'express': convertByteToKB(resultExpress.throughput.average)
     },
 
-    'Response data throughput per second (max)': {
-      'fastify': resultFastify.throughput.max,
-      'express': resultExpress.throughput.max
+    'Response data throughput per second in Kb (max)': {
+      'fastify': convertByteToKB(resultFastify.throughput.max),
+      'express': convertByteToKB(resultExpress.throughput.max)
     },
 
     'Latency (avg)': { 'fastify': resultFastify.latency.average, 'express': resultExpress.latency.average },
@@ -25,4 +25,8 @@ function printResult(resultFastify, resultExpress) {
   }
 
   console.table(table)
+}
+
+function convertByteToKB(n) {
+  return +(n / 1024).toFixed(2)
 }
