@@ -1,6 +1,6 @@
 module.exports = {
   autocannon: {
-    connections: 10,
+    connections: 100,
     duration: 5
   }
 }
