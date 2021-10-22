@@ -22,7 +22,7 @@ afterAll(() => { app.mongod.stop(); app.close() })
 test('Endpoint /employees GET with no querystring', async () => {
   let { body } = await app.inject({
     method: 'GET',
-    url: '/api/employees'
+    url: '/fastify/api/employees'
   })
 
   body = JSON.parse(body)
@@ -36,7 +36,7 @@ test('Endpoint /employees GET with no querystring', async () => {
 test('Endpoint /employees GET with 1 filter name=Nadeem', async () => {
   let { body } = await app.inject({
     method: 'GET',
-    url: '/api/employees?name=Nadeem'
+    url: '/fastify/api/employees?name=Nadeem'
   })
 
   body = JSON.parse(body)
@@ -55,7 +55,7 @@ test('Endpoint /employees GET with 1 filter name=Nadeem', async () => {
 test('Endpoint /employees GET with 2 filters name=~mira&age>=10', async () => {
   let { body } = await app.inject({
     method: 'GET',
-    url: '/api/employees?name=~mira&age>=10'
+    url: '/fastify/api/employees?name=~mira&age>=10'
   })
 
   body = JSON.parse(body)
@@ -74,7 +74,7 @@ test('Endpoint /employees GET with 2 filters name=~mira&age>=10', async () => {
 test('Endpoint /employees GET with 1 filter addresses.street=street3', async () => {
   let { body } = await app.inject({
     method: 'GET',
-    url: '/api/employees?addresses.street=street3'
+    url: '/fastify/api/employees?addresses.street=street3'
   })
 
   body = JSON.parse(body)
@@ -93,7 +93,7 @@ test('Endpoint /employees GET with 1 filter addresses.street=street3', async () 
 test('Endpoint /employees GET with 1 filter noField=null', async () => {
   let { body } = await app.inject({
     method: 'GET',
-    url: '/api/employees?noField=null'
+    url: '/fastify/api/employees?noField=null'
   })
 
   body = JSON.parse(body)
@@ -112,7 +112,7 @@ test('Endpoint /employees GET with 1 filter noField=null', async () => {
 test('Endpoint /employees GET with select name,age', async () => {
   let { body } = await app.inject({
     method: 'GET',
-    url: '/api/employees?select=name,age'
+    url: '/fastify/api/employees?select=name,age'
   })
 
   body = JSON.parse(body)
@@ -139,7 +139,7 @@ test('Endpoint /employees GET with select name,age', async () => {
 test('Endpoint /employees GET with sort -name', async () => {
   let { body } = await app.inject({
     method: 'GET',
-    url: '/api/employees?sort=-name'
+    url: '/fastify/api/employees?sort=-name'
   })
 
   body = JSON.parse(body)
@@ -158,7 +158,7 @@ test('Endpoint /employees GET with sort -name', async () => {
 test('Endpoint /employees GET with skip 2', async () => {
   let { body } = await app.inject({
     method: 'GET',
-    url: '/api/employees?skip=2'
+    url: '/fastify/api/employees?skip=2'
   })
 
   body = JSON.parse(body)
@@ -177,7 +177,7 @@ test('Endpoint /employees GET with skip 2', async () => {
 test('Endpoint /employees GET with limit 2', async () => {
   let { body } = await app.inject({
     method: 'GET',
-    url: '/api/employees?limit=2'
+    url: '/fastify/api/employees?limit=2'
   })
 
   body = JSON.parse(body)
@@ -198,7 +198,7 @@ test('Endpoint /employees GET with limit 2', async () => {
 test('Endpoint /employees/distinct/:path GET without filter', async () => {
   let { body } = await app.inject({
     method: 'GET',
-    url: '/api/employees/distinct/name'
+    url: '/fastify/api/employees/distinct/name'
   })
 
   body = JSON.parse(body)
@@ -214,7 +214,7 @@ test('Endpoint /employees/distinct/:path GET without filter', async () => {
 test('Endpoint /employees/distinct/:path GET with filter', async () => {
   let { body } = await app.inject({
     method: 'GET',
-    url: '/api/employees/distinct/name?name=~a$'
+    url: '/fastify/api/employees/distinct/name?name=~a$'
   })
 
   body = JSON.parse(body)
@@ -231,7 +231,7 @@ test('Endpoint /employees/distinct/:path GET with filter', async () => {
 test('Endpoint /employees POST', async () => {
   let { body } = await app.inject({
     method: 'POST',
-    url: '/api/employees',
+    url: '/fastify/api/employees',
     payload: [
       {
         _id: '616d829d0767b556f1bc9111',
@@ -271,7 +271,7 @@ test('Endpoint /employees POST', async () => {
 test('Endpoint /employees PUT', async () => {
   let { body } = await app.inject({
     method: 'PUT',
-    url: '/api/employees',
+    url: '/fastify/api/employees',
     payload: [
       {
         id: '616d829d0767b556f1bc90c1',
@@ -299,7 +299,7 @@ test('Endpoint /employees PUT', async () => {
 test('Endpoint /employees DELETE with filter name=~a$', async () => {
   let { body } = await app.inject({
     method: 'DELETE',
-    url: '/api/employees?name=~a$'
+    url: '/fastify/api/employees?name=~a$'
   })
 
   expect(body).toBe('OK')
@@ -308,7 +308,7 @@ test('Endpoint /employees DELETE with filter name=~a$', async () => {
 test('Endpoint /employees DELETE with filter name=~xxx$', async () => {
   let { body } = await app.inject({
     method: 'DELETE',
-    url: '/api/employees?name=~xxx$'
+    url: '/fastify/api/employees?name=~xxx$'
   })
 
   expect(body).toBe('Document(s)NotFound')

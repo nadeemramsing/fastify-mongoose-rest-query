@@ -1,3 +1,3 @@
 module.exports = {
-  Employee: { schema: require('./employee.schema'), endpointName: 'employees' }
+  Employee: { schema: require('./employee.schema')(), endpointName: 'employees' }
 }

@@ -15,7 +15,7 @@ async function build(opts = {}) {
 
   app.mongod = mongod
 
-  const mrqOptions = { prefix: '/api', schemas }
+  const mrqOptions = { prefix: '/fastify/api', schemas }
 
   // Stub: Hook for x-client-mongodb-path
   app.decorateRequest('x-client-mongodb-path', '')

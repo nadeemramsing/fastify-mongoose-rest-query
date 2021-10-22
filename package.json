@@ -4,7 +4,8 @@
   "description": "",
   "main": "src/index.js",
   "scripts": {
-    "test": "jest --maxWorkers=50% --detectOpenHandles"
+    "test": "jest --maxWorkers=50% --detectOpenHandles",
+    "benchmark": "exit"
   },
   "repository": {
     "type": "git",
@@ -26,9 +27,16 @@
     "sift": "^15.0.0"
   },
   "devDependencies": {
+    "async": "^3.2.1",
+    "autocannon": "^7.5.0",
+    "dot-prop": "^6.0.1",
+    "express": "^4.17.1",
     "jest": "~27.3.0",
     "mongodb-memory-server": "~7.4.4",
+    "mongoose-auto-number": "^1.0.4",
     "mongoose-lean-virtuals": "~0.9.0",
+    "mongoose-rest-query": "^0.1.29",
+    "mongoose-sanitize-json": "^2.0.0",
     "pino-pretty": "~7.1.0"
   }
 }

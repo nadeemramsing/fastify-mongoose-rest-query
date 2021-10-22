@@ -5,6 +5,15 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "name": "Launch mongoose-rest-query server",
+      "program": "${workspaceFolder}/mongoose-rest-query/server.js",
+      "request": "launch",
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "type": "pwa-node"
+    },
+    {
       "name": "Launch Program",
       "program": "${workspaceFolder}/server.js",
       "request": "launch",

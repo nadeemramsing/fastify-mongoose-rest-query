@@ -24,7 +24,7 @@ afterAll(() => { app.mongod.stop(); app.close() })
 test('Endpoint /employees/:id/addresses/:subId GET', async () => {
   let { body } = await app.inject({
     method: 'GET',
-    url: '/api/employees/616d829d0767b556f1bc90c1/addresses/616d829d0767b556f1bc90c5'
+    url: '/fastify/api/employees/616d829d0767b556f1bc90c1/addresses/616d829d0767b556f1bc90c5'
   })
 
   body = JSON.parse(body)
@@ -38,7 +38,7 @@ test('Endpoint /employees/:id/addresses/:subId GET', async () => {
 test('Endpoint /employees/:id/addresses/:subId PUT', async () => {
   let { body } = await app.inject({
     method: 'PUT',
-    url: '/api/employees/616d829d0767b556f1bc90c1/addresses/616d829d0767b556f1bc90c5',
+    url: '/fastify/api/employees/616d829d0767b556f1bc90c1/addresses/616d829d0767b556f1bc90c5',
     payload: {
       city: 'Port Louis'
     }
@@ -52,14 +52,14 @@ test('Endpoint /employees/:id/addresses/:subId PUT', async () => {
 test('Endpoint /employees/:id/addresses/:subId DELETE', async () => {
   let { body } = await app.inject({
     method: 'DELETE',
-    url: '/api/employees/616d829d0767b556f1bc90c1/addresses/616d829d0767b556f1bc90c5'
+    url: '/fastify/api/employees/616d829d0767b556f1bc90c1/addresses/616d829d0767b556f1bc90c5'
   })
 
   expect(body).toBe('OK')
 
   let { 'body': body2 } = await app.inject({
     method: 'GET',
-    url: '/api/employees/616d829d0767b556f1bc90c1/addresses/616d829d0767b556f1bc90c5'
+    url: '/fastify/api/employees/616d829d0767b556f1bc90c1/addresses/616d829d0767b556f1bc90c5'
   })
 
   expect(body2).toBe('SubDocumentNotFound')

@@ -24,7 +24,7 @@ afterAll(() => { app.mongod.stop(); app.close() })
 test('Endpoint /employees/:id/addresses GET with no querystring', async () => {
   let { body } = await app.inject({
     method: 'GET',
-    url: '/api/employees/616d829d0767b556f1bc90c1/addresses'
+    url: '/fastify/api/employees/616d829d0767b556f1bc90c1/addresses'
   })
 
   body = JSON.parse(body)
@@ -35,7 +35,7 @@ test('Endpoint /employees/:id/addresses GET with no querystring', async () => {
 test('Endpoint /employees/:id/addresses GET with 1 filter city=~sin$', async () => {
   let { body } = await app.inject({
     method: 'GET',
-    url: '/api/employees/616d829d0767b556f1bc90c1/addresses?city=~sin$'
+    url: '/fastify/api/employees/616d829d0767b556f1bc90c1/addresses?city=~sin$'
   })
 
   body = JSON.parse(body)
@@ -51,7 +51,7 @@ test('Endpoint /employees/:id/addresses GET with 1 filter city=~sin$', async () 
 test('Endpoint /employees/:id/addresses/distinct/city GET', async () => {
   let { body } = await app.inject({
     method: 'GET',
-    url: '/api/employees/616d829d0767b556f1bc90c1/addresses/distinct/city'
+    url: '/fastify/api/employees/616d829d0767b556f1bc90c1/addresses/distinct/city'
   })
 
   body = JSON.parse(body)
@@ -62,7 +62,7 @@ test('Endpoint /employees/:id/addresses/distinct/city GET', async () => {
 test('Endpoint /employees/:id/addresses/distinct/city GET with filter', async () => {
   let { body } = await app.inject({
     method: 'GET',
-    url: '/api/employees/616d829d0767b556f1bc90c1/addresses/distinct/city?city=~pipe$'
+    url: '/fastify/api/employees/616d829d0767b556f1bc90c1/addresses/distinct/city?city=~pipe$'
   })
 
   body = JSON.parse(body)
@@ -73,7 +73,7 @@ test('Endpoint /employees/:id/addresses/distinct/city GET with filter', async ()
 test('Endpoint /employees/:id/addresses/distinct GET', async () => {
   let { body } = await app.inject({
     method: 'GET',
-    url: '/api/employees/616d829d0767b556f1bc90c1/addresses/distinct'
+    url: '/fastify/api/employees/616d829d0767b556f1bc90c1/addresses/distinct'
   })
 
   body = JSON.parse(body)

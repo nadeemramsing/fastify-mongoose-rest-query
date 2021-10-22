@@ -1,32 +1,39 @@
 const { Schema } = require('mongoose');
 const leanVirtuals = require('mongoose-lean-virtuals')
+const sanitizeJson = require('mongoose-sanitize-json')
 
-const addressSchema = new Schema({
-  street: String,
-  city: String
-})
+module.exports = (options = {}) => {
 
-addressSchema
-  .virtual('cityUpper')
-  .get(function () { return this.city?.toUpperCase() })
+  const addressSchema = new Schema({
+    street: String,
+    city: String
+  })
 
-// Avoid using subarray hooks
-addressSchema.pre('save', async function (next, options) { })
-addressSchema.pre('remove', async function (next, options) { })
+  addressSchema
+    .virtual('cityUpper')
+    .get(function () { return this.city?.toUpperCase() })
 
-const employeeSchema = new Schema({
-  name: String,
-  age: Number,
-  addresses: [addressSchema]
-});
+  // Avoid using subarray hooks
+  addressSchema.pre('save', async function (next, options) { })
+  addressSchema.pre('remove', async function (next, options) { })
 
-employeeSchema
-  .virtual('initial')
-  .get(function () { return this.name?.[0].toUpperCase() })
+  const employeeSchema = new Schema({
+    name: String,
+    age: Number,
+    addresses: [addressSchema]
+  });
 
-employeeSchema.pre('save', async function (next, options) { })
-employeeSchema.pre('remove', function (next, options) { next() })
+  employeeSchema
+    .virtual('initial')
+    .get(function () { return this.name?.[0].toUpperCase() })
 
-employeeSchema.plugin(leanVirtuals)
+  employeeSchema.pre('save', async function (next, options) { })
+  employeeSchema.pre('remove', function (next, options) { next() })
 
-module.exports = employeeSchema
+  employeeSchema.plugin(leanVirtuals)
+
+  if (options.isExpress)
+    employeeSchema.plugin(sanitizeJson)
+
+  return employeeSchema
+}
