@@ -1,4 +1,6 @@
 const express = require('express')
+const morgan = require('morgan')
+
 const { config, restify, db } = require('mongoose-rest-query')
 const { MongoMemoryServer } = require('mongodb-memory-server');
 
@@ -7,16 +9,20 @@ const mongoInit = require('../mongo-init');
 config.modelSchemas = require('./model');
 config.multiDB = true;
 
-async function build() {
+async function build({ mongod, uri } = {}) {
 
   const app = express()
 
   // Stub: MongoDB
-  const mongod = await MongoMemoryServer.create()
-  const uri = mongod.getUri()
-  await mongoInit(uri)
+  if (!mongod) {
+    mongod = await MongoMemoryServer.create()
+    uri = mongod.getUri()
+    await mongoInit(uri)
+  }
 
   app.mongod = mongod
+
+  app.use(morgan('common'))
 
   app.use((req, res, next) => { req.headers['x-client-mongodb-path'] = uri; next() })
 

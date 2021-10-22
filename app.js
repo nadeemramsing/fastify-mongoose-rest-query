@@ -5,13 +5,19 @@ const mrq = require('./src')
 const schemas = require('./models')
 const mongoInit = require('./mongo-init')
 
-async function build(opts = {}) {
-  const app = fastify(opts)
+async function build({ mongod, uri } = {}) {
+  const app = fastify({
+    logger: {
+      logLevel: 'info'
+    }
+  })
 
   // Stub: MongoDB
-  const mongod = await MongoMemoryServer.create()
-  const uri = mongod.getUri()
-  await mongoInit(uri)
+  if (!mongod) {
+    mongod = await MongoMemoryServer.create()
+    uri = mongod.getUri()
+    await mongoInit(uri)
+  }
 
   app.mongod = mongod
 
