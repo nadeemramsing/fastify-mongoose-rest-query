@@ -19,6 +19,8 @@ async function main() {
   await require('./main.param.benchmark')()
   await require('./main.param.subarray.benchmark')()
   await require('./main.param.subarray.param.benchmark')()
+
+  process.exit(0)
 }
 
 main()

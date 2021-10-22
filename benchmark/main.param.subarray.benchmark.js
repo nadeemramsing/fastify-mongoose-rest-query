@@ -5,8 +5,6 @@ const { printResult } = require('./util')
 
 module.exports = async () => {
   await benchmarkGet()
-
-  process.exit(0)
 }
 
 async function benchmarkGet() {

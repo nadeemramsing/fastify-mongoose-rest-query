@@ -9,8 +9,6 @@ const expressPrefix = 'http://localhost:3001/express'
 module.exports = async () => {
   await benchmarkGet()
   await benchmarkGetWithQueryString()
-
-  process.exit(0)
 }
 
 async function benchmarkGet() {
