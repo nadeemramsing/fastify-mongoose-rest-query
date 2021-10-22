@@ -11,8 +11,7 @@
       "skipFiles": [
         "<node_internals>/**"
       ],
-      "type": "pwa-node",
-      "outputCapture": "std"
+      "type": "pwa-node"
     },
     {
       "name": "Launch mongoose-rest-query server",

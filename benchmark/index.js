@@ -15,7 +15,7 @@ async function main() {
   await expressListenAsync(expressApp, 3001)
   console.log('Express server listening on ' + 3001)
 
-  debugger
+  await require('./main.benchmark')()
 }
 
 main()

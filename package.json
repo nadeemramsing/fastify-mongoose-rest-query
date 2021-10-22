@@ -36,8 +36,6 @@
     "mongoose-auto-number": "^1.0.4",
     "mongoose-lean-virtuals": "~0.9.0",
     "mongoose-rest-query": "^0.1.29",
-    "mongoose-sanitize-json": "^2.0.0",
-    "morgan": "^1.10.0",
-    "pino-pretty": "~7.1.0"
+    "mongoose-sanitize-json": "^2.0.0"
   }
 }

@@ -6,11 +6,7 @@ const schemas = require('./models')
 const mongoInit = require('./mongo-init')
 
 async function build({ mongod, uri } = {}) {
-  const app = fastify({
-    logger: {
-      logLevel: 'info'
-    }
-  })
+  const app = fastify()
 
   // Stub: MongoDB
   if (!mongod) {

@@ -1,5 +1,4 @@
 const express = require('express')
-const morgan = require('morgan')
 
 const { config, restify, db } = require('mongoose-rest-query')
 const { MongoMemoryServer } = require('mongodb-memory-server');
@@ -21,8 +20,6 @@ async function build({ mongod, uri } = {}) {
   }
 
   app.mongod = mongod
-
-  app.use(morgan('common'))
 
   app.use((req, res, next) => { req.headers['x-client-mongodb-path'] = uri; next() })
 
