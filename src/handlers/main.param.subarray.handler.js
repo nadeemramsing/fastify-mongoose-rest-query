@@ -10,7 +10,7 @@ const fp = {
 }
 
 const { getSubArray } = require('../utils/model.util')
-const { getQueryForSubArray } = require("../utils/mongoose.util")
+const { getQueryForSubArray, toJSONOptions } = require("../utils/mongoose.util")
 
 module.exports = (modelName, path) => {
   return {
@@ -32,8 +32,27 @@ module.exports = (modelName, path) => {
     )(subarray)
   }
 
-  function create(req, rep) {
-    debugger
+  async function create(req, rep) {
+    const Model = req.models[modelName]
+
+    const doc = await Model.findById(req.params.id)
+
+    const subarray = doc[path]
+    const body = req.body
+    const isBodyArray = Array.isArray(body)
+
+    if (isBodyArray)
+      subarray.push(...body)
+    else
+      subarray.push(body)
+
+    await doc.save({
+      path,
+      req,
+      'isCreateSubItem': true
+    })
+
+    return doc.toJSON(toJSONOptions)[path]
   }
 
   async function distinct(req, rep) {

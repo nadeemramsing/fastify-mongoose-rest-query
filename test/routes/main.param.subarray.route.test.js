@@ -82,33 +82,44 @@ test('Endpoint /employees/:id/addresses/distinct GET', async () => {
 })
 
 test('Endpoint /employees/:id/addresses POST with object', async () => {
+  const payload = {
+    street: 'TestStreet',
+    city: 'TestCity'
+  }
+
   let { body } = await app.inject({
     method: 'POST',
     url: '/fastify/api/employees/616d829d0767b556f1bc90c1/addresses',
-    payload: {
-      street: 'TestStreet',
-      city: 'TestCity'
-    },
+    payload
   })
 
-  debugger
+  body = JSON.parse(body)
+
+  expect(body[body.length - 1]).toMatchObject(payload)
 })
 
 test('Endpoint /employees/:id/addresses POST with array', async () => {
+  const payload1 = {
+    street: 'TestStreet1',
+    city: 'TestCity1'
+  }
+
+  const payload2 = {
+    street: 'TestStreet2',
+    city: 'TestCity2'
+  }
+
   let { body } = await app.inject({
     method: 'POST',
     url: '/fastify/api/employees/616d829d0767b556f1bc90c1/addresses',
-    payload: [
-      {
-        street: 'TestStreet1',
-        city: 'TestCity1'
-      },
-      {
-        street: 'TestStreet2',
-        city: 'TestCity2'
-      }
-    ]
+    payload: [payload1, payload2]
   })
 
-  debugger
+  body = JSON.parse(body)
+
+  const [address1, address2] = body.slice(-2)
+
+  expect(address1).toMatchObject(payload1)
+  expect(address2).toMatchObject(payload2)
+
 })
