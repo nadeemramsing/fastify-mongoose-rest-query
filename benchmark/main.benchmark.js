@@ -7,10 +7,10 @@ const fastifyPrefix = 'http://localhost:3000/fastify'
 const expressPrefix = 'http://localhost:3001/express'
 
 module.exports = async () => {
-  // await benchmarkGet()
-  // await benchmarkGetWithQueryString()
-  // await benchmarkCount()
-  // await benchmarkPost()
+  await benchmarkGet()
+  await benchmarkGetWithQueryString()
+  await benchmarkCount()
+  await benchmarkPost()
   await benchmarkPut()
 }
 
