@@ -1,4 +1,10 @@
-const { getQuery, transformLean, leanOptions } = require('../utils/mongoose.util')
+const bs = require('binary-search')
+
+const fp = {
+  omit: require('lodash/fp/omit'),
+}
+
+const { getQuery, transformLean, leanOptions, toJSONOptions } = require('../utils/mongoose.util')
 
 module.exports = modelName => {
   return {
@@ -11,7 +17,7 @@ module.exports = modelName => {
   }
 
   function get(req, rep) {
-    const Model = req.models.get(modelName)
+    const Model = req.models[modelName]
 
     const query = getQuery(req.query)
 
@@ -26,33 +32,78 @@ module.exports = modelName => {
   }
 
   function count(req, rep) {
-    const Model = req.models.get(modelName)
+    const Model = req.models[modelName]
 
     const query = getQuery(req.query)
 
-    return Model.count(query.filter)
+    return Model.estimatedDocumentCount(query.filter)
   }
 
   function distinct(req, rep) {
-    const Model = req.models.get(modelName)
+    const Model = req.models[modelName]
 
     const query = getQuery(req.query)
 
     return Model.distinct(req.params.path, query.filter)
   }
 
-  function create(req, rep) {
-    const Model = req.models.get(modelName)
+  async function create(req, rep) {
+    const Model = req.models[modelName]
+    let body = req.body
 
-    return Model.create(req.body)
+    if (!Array.isArray(body))
+      body = [body]
+
+    const docs = await Model.create(body, { req })
+
+    return docs.map(doc => doc.toJSON(toJSONOptions))
   }
 
-  function updateMany() {
+  async function updateMany(req, rep) {
+    const Model = req.models[modelName]
 
+    const ids = req.body.map(doc => doc.id)
+
+    const docs = await Model
+      .find({ '_id': { $in: ids } })
+      .sort('_id')
+
+    const docsId = docs.map(doc => doc.id)
+
+    for (let body of req.body) {
+      const i = bs(docsId, body.id, (needle, id) => needle.localeCompare(id))
+      const doc = docs[i]
+
+      if (!doc)
+        continue
+
+      body = fp.omit('id', body)
+
+      const _prev = doc.toJSON()
+
+      Object.assign(doc, body)
+
+      Object.keys(body).forEach(field => doc.markModified(field))
+
+      await doc.save({ req, _prev })
+    }
+
+    return docs.map(doc => doc.toJSON(toJSONOptions))
   }
 
-  function deleteMany() {
+  async function deleteMany(req, rep) {
+    const Model = req.models[modelName]
 
+    const query = getQuery(req.query)
+
+    const docs = await Model.find(query.filter)
+
+    if (!docs.length)
+      throw 'Document(s)NotFound'
+
+    await Promise.all(docs.map(doc => doc.remove({ req })))
+
+    return 'OK'
   }
 
 }

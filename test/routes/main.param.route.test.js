@@ -21,7 +21,7 @@ afterAll(() => { app.mongod.stop(); app.close() })
 test('Endpoint /employees/:id GET with no querystring', async () => {
   let { body } = await app.inject({
     method: 'GET',
-    url: '/api/employees/616d829d0767b556f1bc90c1'
+    url: '/fastify/api/employees/616d829d0767b556f1bc90c1'
   })
 
   body = JSON.parse(body)
@@ -40,11 +40,29 @@ test('Endpoint /employees/:id GET with no querystring', async () => {
 test('Endpoint /employees/:id PUT', async () => {
   let { body } = await app.inject({
     method: 'PUT',
-    url: '/api/employees/616d829d0767b556f1bc90c1',
+    url: '/fastify/api/employees/616d829d0767b556f1bc90c1',
     payload: { age: 29 }
   })
 
   body = JSON.parse(body)
 
   expect(body.age).toBe(29)
+})
+
+test('Endpoint /employees/:id DELETE', async () => {
+  let { body } = await app.inject({
+    method: 'DELETE',
+    url: '/fastify/api/employees/616d829d0767b556f1bc90c1'
+  })
+
+  expect(body).toBe('OK')
+})
+
+test('Endpoint /employees/:id DELETE DocumentNotFound', async () => {
+  let { body } = await app.inject({
+    method: 'DELETE',
+    url: '/fastify/api/employees/616d829d0767b556f1bc9111'
+  })
+
+  expect(body).toBe('DocumentNotFound')
 })

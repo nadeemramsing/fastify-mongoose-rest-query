@@ -1,10 +1,6 @@
 async function main() {
 
-  const app = await require('./app')({
-    logger: {
-      logLevel: 'info'
-    }
-  })
+  const app = await require('./app')()
 
   await app.ready()
 

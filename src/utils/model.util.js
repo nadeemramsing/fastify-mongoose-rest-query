@@ -5,7 +5,7 @@ module.exports = {
 }
 
 async function getSubArray(req, modelName, path) {
-  const Model = req.models.get(modelName)
+  const Model = req.models[modelName]
 
   const doc = await Model
     .findById(req.params.id)

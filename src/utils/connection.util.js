@@ -1,7 +1,7 @@
 const { createConnection } = require('mongoose')
+const { isEmpty } = require('./object.util')
 
 module.exports = {
-  getConnection,
   getModels,
   closeConnections
 }
@@ -12,9 +12,7 @@ function getConnection(uri) {
   let conn = connMap.get(uri)
 
   if (!conn) {
-    const instance = createConnection(uri)
-
-    conn = { instance, 'modelMap': new Map() }
+    conn = createConnection(uri)
 
     connMap.set(uri, conn)
   }
@@ -22,23 +20,21 @@ function getConnection(uri) {
   return conn
 }
 
+function registerModels(conn, schemas) {
+  for (const [modelName, { schema }] of Object.entries(schemas))
+    model = conn.model(modelName, schema)
+}
+
 function getModels(uri, schemas) {
   const conn = getConnection(uri)
 
-  for (const [modelName, { schema }] of Object.entries(schemas)) {
-    let model = conn.modelMap.get(modelName)
+  if (isEmpty(conn.models))
+    registerModels(conn, schemas)
 
-    if (!model) {
-      model = conn.instance.model(modelName, schema)
-
-      conn.modelMap.set(modelName, model)
-    }
-  }
-
-  return conn.modelMap
+  return conn.models
 }
 
 async function closeConnections() {
   for (const conn of connMap.values())
-    await conn.instance.close()
+    await conn.close()
 }

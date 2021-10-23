@@ -5,10 +5,12 @@ const fp = {
   pipe: require('lodash/fp/pipe'),
 }
 
-const getQuery = memo(getQuery_)
-const getQueryForSubArray = memo(getQueryForSubArray_)
-const getCriteria = memo(getCriteria_)
-const formatCriteriaValue = memo(formatCriteriaValue_)
+const { memoOptions } = require('./misc.util')
+
+const getQuery = memo(getQuery_, memoOptions)
+const getQueryForSubArray = memo(getQueryForSubArray_, memoOptions)
+const getCriteria = memo(getCriteria_, memoOptions)
+const formatCriteriaValue = memo(formatCriteriaValue_, memoOptions)
 const getSort = memo(getSort_)
 const getSelect = memo(getSelect_)
 const getSelectForSubArray = memo(getSelectForSubArray_)
