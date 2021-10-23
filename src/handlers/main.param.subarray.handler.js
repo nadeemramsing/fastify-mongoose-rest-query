@@ -39,9 +39,8 @@ module.exports = (modelName, path) => {
 
     const subarray = doc[path]
     const body = req.body
-    const isBodyArray = Array.isArray(body)
 
-    if (isBodyArray)
+    if (Array.isArray(body))
       subarray.push(...body)
     else
       subarray.push(body)
