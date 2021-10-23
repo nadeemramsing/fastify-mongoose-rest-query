@@ -25,6 +25,8 @@ async function build({ mongod, uri } = {}) {
 
   app.use(db)
 
+  app.use(express.json())
+
   app.use('/express/api/employees', restify('Employee'))
 
   return app

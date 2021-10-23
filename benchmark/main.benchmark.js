@@ -7,10 +7,11 @@ const fastifyPrefix = 'http://localhost:3000/fastify'
 const expressPrefix = 'http://localhost:3001/express'
 
 module.exports = async () => {
-  await benchmarkGet()
-  await benchmarkGetWithQueryString()
-  await benchmarkCount()
-  await benchmarkPost()
+  // await benchmarkGet()
+  // await benchmarkGetWithQueryString()
+  // await benchmarkCount()
+  // await benchmarkPost()
+  await benchmarkPut()
 }
 
 async function benchmarkGet() {
@@ -106,6 +107,7 @@ async function benchmarkPost() {
 
   const fastifyResult = await autocannon({
     url: fastifyPrefix + route,
+    method: 'POST',
     headers: { 'content-type': 'application/json' },
     body,
     ...config
@@ -115,6 +117,45 @@ async function benchmarkPost() {
     url: expressPrefix + route,
     method: 'POST',
     body,
+    ...config
+  })
+
+  printResult(fastifyResult, expressResult)
+}
+
+async function benchmarkPut() {
+  const route = '/api/employees?'
+
+  console.log('Benchmarking ' + route + '... (PUT)')
+
+  const requests = []
+  for (let age = 1; age <= 100; age += 2)
+    requests.push({
+      body: JSON.stringify([
+        {
+          'id': '616d829d0767b556f1bc90c1',
+          age
+        },
+        {
+          'id': '616d829d0767b556f1bc90c1',
+          'age': age + 1
+        }
+      ])
+    })
+
+  const fastifyResult = await autocannon({
+    url: fastifyPrefix + route,
+    method: 'PUT',
+    headers: { 'content-type': 'application/json' },
+    requests,
+    ...config
+  })
+
+  const expressResult = await autocannon({
+    url: expressPrefix + route,
+    method: 'PUT',
+    headers: { 'content-type': 'application/json' },
+    requests,
     ...config
   })
 
