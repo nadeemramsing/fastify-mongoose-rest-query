@@ -15,6 +15,8 @@ module.exports = (modelName, schema) => plugin((app, opts, done) => {
 
     app.post(prefix, handler.create)
 
+    app.put(prefix, handler.updateMany)
+
     app.get(`${prefix}/distinct`, handler.distinct)
 
     app.get(`${prefix}/distinct/:path`, handler.distinct)

@@ -95,7 +95,7 @@ test('Endpoint /employees/:id/addresses POST with object', async () => {
 
   body = JSON.parse(body)
 
-  expect(body[body.length - 1]).toMatchObject(payload)
+  expect(body).toMatchObject(payload)
 })
 
 test('Endpoint /employees/:id/addresses POST with array', async () => {
@@ -121,5 +121,28 @@ test('Endpoint /employees/:id/addresses POST with array', async () => {
 
   expect(address1).toMatchObject(payload1)
   expect(address2).toMatchObject(payload2)
+})
 
+test('Endpoint /employees/:id/addresses PUT with array', async () => {
+  const payload1 = {
+    id: '616d829d0767b556f1bc90c4',
+    street: 'TestStreet1',
+    city: 'TestCity1'
+  }
+
+  const payload2 = {
+    id: '616d829d0767b556f1bc90c5',
+    street: 'TestStreet2',
+    city: 'TestCity2'
+  }
+
+  let { body } = await app.inject({
+    method: 'PUT',
+    url: '/fastify/api/employees/616d829d0767b556f1bc90c1/addresses',
+    payload: [payload1, payload2]
+  })
+
+  body = JSON.parse(body)
+
+  // expect(body[body.length - 1]).toMatchObject(payload)
 })

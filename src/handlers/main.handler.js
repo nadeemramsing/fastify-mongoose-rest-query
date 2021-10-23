@@ -61,8 +61,12 @@ module.exports = modelName => {
 
   async function updateMany(req, rep) {
     const Model = req.models[modelName]
+    let body = req.body
 
-    const ids = req.body.map(doc => doc.id)
+    if (!Array.isArray(body))
+      body = [body]
+
+    const ids = body.map(doc => doc.id)
 
     const docs = await Model
       .find({ '_id': { $in: ids } })
@@ -70,20 +74,18 @@ module.exports = modelName => {
 
     const docsId = docs.map(doc => doc.id)
 
-    for (let body of req.body) {
-      const i = bs(docsId, body.id, (needle, id) => needle.localeCompare(id))
+    for (let payload of body) {
+      const i = bs(docsId, payload.id, (needle, id) => needle.localeCompare(id))
       const doc = docs[i]
 
       if (!doc)
         continue
 
-      body = fp.omit('id', body)
-
       const _prev = doc.toJSON()
 
-      Object.assign(doc, body)
+      Object.assign(doc, payload)
 
-      Object.keys(body).forEach(field => doc.markModified(field))
+      Object.keys(payload).forEach(field => doc.markModified(field))
 
       await doc.save({ req, _prev })
     }

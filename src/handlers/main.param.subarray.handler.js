@@ -16,6 +16,7 @@ module.exports = (modelName, path) => {
   return {
     get,
     create,
+    updateMany,
     distinct
   }
 
@@ -38,12 +39,12 @@ module.exports = (modelName, path) => {
     const doc = await Model.findById(req.params.id)
 
     const subarray = doc[path]
-    const body = req.body
+    let body = req.body
 
-    if (Array.isArray(body))
-      subarray.push(...body)
-    else
-      subarray.push(body)
+    if (!Array.isArray(body))
+      body = [body]
+
+    subarray.push(...body)
 
     await doc.save({
       path,
@@ -51,7 +52,52 @@ module.exports = (modelName, path) => {
       'isCreateSubItem': true
     })
 
-    return doc.toJSON(toJSONOptions)[path]
+    const res = subarray.slice(-body.length).map(subitem => subitem.toJSON(toJSONOptions))
+
+    return body.length === 1 ? res[0] : res
+  }
+
+  async function updateMany(req, rep) {
+    const Model = req.models[modelName]
+    let body = req.body
+
+    if (!Array.isArray(body))
+      body = [body]
+
+    const ids = body.map(doc => doc.id)
+
+    const doc = await Model.findById(req.params.id)
+
+    const subarray = doc[path]
+
+    const saved = []
+
+    for (const index in ids) {
+      const id = ids[index]
+
+      const subitem = subarray.find(subitem => subitem.id === id)
+
+      if (!subitem)
+        continue
+
+      const payload = body[index]
+
+      const _prev = subitem.toJSON()
+
+      Object.assign(subitem, payload)
+
+      Object.keys(payload).forEach(field => subitem.markModified(field))
+
+      saved.push(subitem)
+
+      await doc.save({
+        req,
+        _prev,
+        'isUpdateManySubItem': true
+      })
+    }
+
+    return saved.map(subitem => subitem.toJSON(toJSONOptions))
   }
 
   async function distinct(req, rep) {

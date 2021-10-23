@@ -72,7 +72,12 @@ module.exports = (modelName, path) => {
     const _prev = subitem.toJSON()
 
     subitem.remove()
-    await doc.save({ req, _prev, 'isDeleteSubItemById': true })
+
+    await doc.save({
+      req,
+      _prev,
+      'isDeleteSubItemById': true
+    })
 
     return 'OK'
   }
