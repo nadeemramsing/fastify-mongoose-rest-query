@@ -9,6 +9,7 @@ const expressPrefix = 'http://localhost:3001/express'
 module.exports = async () => {
   await benchmarkGet()
   await benchmarkGetWithQueryString()
+  await benchmarkCount()
   await benchmarkPost()
 }
 
@@ -40,6 +41,30 @@ async function benchmarkGetWithQueryString() {
     'select=name,age',
     'sort=-name',
     'limit=1'
+  ].join('&')
+
+  console.log('Benchmarking ' + route + '...')
+
+  const fastifyResult = await autocannon({
+    url: fastifyPrefix + route,
+    method: 'GET',
+    ...config
+  })
+
+  const expressResult = await autocannon({
+    url: expressPrefix + route,
+    method: 'GET',
+    ...config
+  })
+
+  printResult(fastifyResult, expressResult)
+}
+
+async function benchmarkCount() {
+  const route = '/api/employees/count?' + [
+    'name=~a$',
+    'age>=10',
+    'addresses.street=street2',
   ].join('&')
 
   console.log('Benchmarking ' + route + '...')

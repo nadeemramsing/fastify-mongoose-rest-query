@@ -9,6 +9,11 @@ function printResult(resultFastify, resultExpress) {
       'express': calcResponseTime(resultExpress)
     },
 
+    'Response time per request in ms (min)': {
+      'fastify': calcResponseTime(resultFastify, 'max'),
+      'express': calcResponseTime(resultExpress, 'max')
+    },
+
     'Requests per second (avg)': {
       'fastify': resultFastify.requests.average,
       'express': resultExpress.requests.average
@@ -17,26 +22,6 @@ function printResult(resultFastify, resultExpress) {
     'Requests per second (max)': {
       'fastify': resultFastify.requests.max,
       'express': resultExpress.requests.max
-    },
-
-    'Response data throughput per second in Kb (avg)': {
-      'fastify': convertByteToKB(resultFastify.throughput.average),
-      'express': convertByteToKB(resultExpress.throughput.average)
-    },
-
-    'Response data throughput per second in Kb (max)': {
-      'fastify': convertByteToKB(resultFastify.throughput.max),
-      'express': convertByteToKB(resultExpress.throughput.max)
-    },
-
-    'Latency (avg)': {
-      'fastify': resultFastify.latency.average,
-      'express': resultExpress.latency.average
-    },
-
-    'Latency (max)': {
-      'fastify': resultFastify.latency.max,
-      'express': resultExpress.latency.max
     },
 
     'Number of errors': {
@@ -53,10 +38,6 @@ function printResult(resultFastify, resultExpress) {
   console.table(table)
 }
 
-function calcResponseTime({ requests, duration }) {
-  return +((duration * 1000) / requests.average).toFixed(2)
-}
-
-function convertByteToKB(n) {
-  return +(n / 1024).toFixed(2)
+function calcResponseTime({ requests, duration }, type = 'average') {
+  return +((duration * 1000) / requests[type]).toFixed(2)
 }
