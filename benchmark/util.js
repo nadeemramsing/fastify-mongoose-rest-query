@@ -19,16 +19,6 @@ function printResult(resultFastify, resultExpress) {
       'express': resultExpress.requests.max
     },
 
-    'Response data throughput per second in Kb (avg)': {
-      'fastify': convertByteToKB(resultFastify.throughput.average),
-      'express': convertByteToKB(resultExpress.throughput.average)
-    },
-
-    'Response data throughput per second in Kb (max)': {
-      'fastify': convertByteToKB(resultFastify.throughput.max),
-      'express': convertByteToKB(resultExpress.throughput.max)
-    },
-
     'Latency (avg)': {
       'fastify': resultFastify.latency.average,
       'express': resultExpress.latency.average
