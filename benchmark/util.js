@@ -19,16 +19,6 @@ function printResult(resultFastify, resultExpress) {
       'express': resultExpress.requests.max
     },
 
-    'Latency (avg)': {
-      'fastify': resultFastify.latency.average,
-      'express': resultExpress.latency.average
-    },
-
-    'Latency (max)': {
-      'fastify': resultFastify.latency.max,
-      'express': resultExpress.latency.max
-    },
-
     'Number of errors': {
       'fastify': resultFastify.errors,
       'express': resultExpress.errors
