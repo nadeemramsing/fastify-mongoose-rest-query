@@ -15,6 +15,7 @@ const { getQueryForSubArray } = require("../utils/mongoose.util")
 module.exports = (modelName, path) => {
   return {
     get,
+    create,
     distinct
   }
 
@@ -29,6 +30,10 @@ module.exports = (modelName, path) => {
       fp.take(query.take),
       fp.map(query.select ? fp.pick(query.select) : x => x)
     )(subarray)
+  }
+
+  function create(req, rep) {
+    debugger
   }
 
   async function distinct(req, rep) {

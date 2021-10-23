@@ -80,3 +80,35 @@ test('Endpoint /employees/:id/addresses/distinct GET', async () => {
 
   expect(Array.isArray(body)).toBe(true)
 })
+
+test('Endpoint /employees/:id/addresses POST with object', async () => {
+  let { body } = await app.inject({
+    method: 'POST',
+    url: '/fastify/api/employees/616d829d0767b556f1bc90c1/addresses',
+    payload: {
+      street: 'TestStreet',
+      city: 'TestCity'
+    },
+  })
+
+  debugger
+})
+
+test('Endpoint /employees/:id/addresses POST with array', async () => {
+  let { body } = await app.inject({
+    method: 'POST',
+    url: '/fastify/api/employees/616d829d0767b556f1bc90c1/addresses',
+    payload: [
+      {
+        street: 'TestStreet1',
+        city: 'TestCity1'
+      },
+      {
+        street: 'TestStreet2',
+        city: 'TestCity2'
+      }
+    ]
+  })
+
+  debugger
+})

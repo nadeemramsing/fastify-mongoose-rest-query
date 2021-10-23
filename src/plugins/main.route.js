@@ -16,11 +16,11 @@ module.exports = schemas => plugin((app, opts, done) => {
 
     app.get(`${prefix}/distinct/:path`, handler.distinct)
 
-    app.post(`${prefix}`, handler.create)
+    app.post(prefix, handler.create)
 
-    app.put(`${prefix}`, handler.updateMany)
+    app.put(prefix, handler.updateMany)
 
-    app.delete(`${prefix}`, handler.deleteMany)
+    app.delete(prefix, handler.deleteMany)
 
     app.register(mainParamRoute(modelName, schema), { prefix })
   }
